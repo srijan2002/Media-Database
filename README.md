@@ -1,4 +1,4 @@
-# media_db
+# MEDIA DATABASE
 
 A new Flutter application.
 Developed Using Android Studio and Emulator, Android 9 SDK 28 and Firebase Firestore
@@ -11,6 +11,7 @@ A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- [Flutter Tutorial for beginners](https://www.youtube.com/watch?v=1ukSR1GRtMU&list=PL4cUxeGkcC9jLYyp2Aoh6hcWuxFDX6PBJ)
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
