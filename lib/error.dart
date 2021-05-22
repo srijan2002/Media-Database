@@ -20,30 +20,35 @@ class _ErrorState extends State<Error> {
             )
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(50,100,40,20),
-              child: Text(
-                "ERROR IN RESULT !",
-                style:TextStyle(
-                  fontSize: 26.0,
-                  fontFamily: 'Playfair',
-                  color: Colors.blue[900],
-                  fontWeight: FontWeight.bold
-                )
+              padding: const EdgeInsets.fromLTRB(0,100,0,20),
+              child: Center(
+                child: Text(
+                  "ERROR IN RESULT !",
+                  style:TextStyle(
+                    fontSize: 26.0,
+                    fontFamily: 'Playfair',
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold
+                  )
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(50,20,40,60),
-              child: Text(
-                  "RETRY WITH CORRECT SPELLINGS  ",
-                  style:TextStyle(
-                      fontSize: 17.0,
-                      fontFamily: 'Playfair',
-                    letterSpacing: 1.55,
-                    color: Colors.indigoAccent[700],
-                      fontWeight: FontWeight.bold
-                  )
+              padding: const EdgeInsets.fromLTRB(0,20,0,60),
+              child: Center(
+                child: Text(
+                    "INCORRECT SPELLING",
+                    style:TextStyle(
+                        fontSize: 17.0,
+                        fontFamily: 'Playfair',
+                      letterSpacing: 1.55,
+                      color: Colors.indigoAccent[700],
+                        fontWeight: FontWeight.bold
+                    )
+                ),
               ),
             ),
             Padding(
