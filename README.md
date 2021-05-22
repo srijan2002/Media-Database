@@ -1,6 +1,7 @@
 # media_db
 
 A new Flutter application.
+Developed Using Android Studio and Emulator, Android 9 SDK 28 and Firebase Firestore
 
 ## Getting Started
 
@@ -14,3 +15,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Features
+ - Google Authorization Sign-in option for every individual user
+ - Search option for a wide range of Movies and Series and much more
+ - Add to favorites option
+ - Delete Favorite option on tapping the desired Movie/Series card in Favorites list
+ - Automatic login retention on closing the app and re-opening without logging out
