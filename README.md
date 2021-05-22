@@ -23,3 +23,6 @@ samples, guidance on mobile development, and a full API reference.
  - Add to favorites option
  - Delete Favorite option on tapping the desired Movie/Series card in Favorites list
  - Automatic login retention on closing the app and re-opening without logging out
+
+## Overview
+![Screenshot_2021-05-22-19-33-51-963_com google android gms](https://user-images.githubusercontent.com/77445478/119229314-11217c00-bb35-11eb-8e28-3ba34b16f7b3.jpg)
