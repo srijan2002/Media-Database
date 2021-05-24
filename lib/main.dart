@@ -100,64 +100,140 @@ class _HomeState extends State<Home> {
     initLogin();
 
     return Scaffold(
-      // backgroundColor: Colors.deepPurple[900],
-      body: Container(
+      // backgroundColor: Colors.black45,
+
+      body:  Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.deepPurple[900], Colors.deepOrange[400]]
-          )
+          gradient:LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [Color(0xA91C1F1F), Colors.grey[900], Colors.blueGrey[900], Colors.black])
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8,90,8,0),
-          child: Column(
-            children: [
-              Container(
-                child: Text(
-                  "THE MEDIA DATABASE",
-                  style: TextStyle(
-                      fontSize: 28,
-                      fontFamily: 'Playfair',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.cyanAccent,
-                      letterSpacing: 1.5
+            padding: const EdgeInsets.fromLTRB(8,90,8,0),
+            child: Column(
+              children: [
+                Container(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue[900],
+                      borderRadius: BorderRadius.circular(22.0),
+                     border: Border.all(width: 1.9,color: Colors.teal[500])
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 8),
+                      child: Text(
+                        "THE MEDIA DATABASE",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Playfair',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.2
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 32.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FlatButton.icon(
-                      onPressed: () {
-                        if(isLoggedIn==true) {
-                          setState(() {
-                            n = t1.text;
-                          });
-                          getData();
-                        }
-                        else
-                          {
-                            showDialog(context: context, builder:(context){
+                SizedBox(
+                  height: 40.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+
+                    TextButton.icon(
+                          onPressed: () {
+                            if(isLoggedIn==true) {
+                              setState(() {
+                                n = t1.text;
+                              });
+                              getData();
+                            }
+                            else
+                              {
+                                showDialog(context: context, builder:(context){
+                                  return AlertDialog(
+                                    backgroundColor: Colors.yellow[100],
+                                    title: Column(
+                                      children: [
+                                        Text(
+                                            "PLEASE SIGN-IN FIRST !",
+                                          style: TextStyle(
+                                            fontSize: 17.0,
+                                            fontFamily: 'Playfair',
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.5,
+                                            color: Colors.black45
+                                          ),
+                                        ),
+                                        CloseButton(
+                                          color: Colors.red[400],
+                                          onPressed: (){
+                                            Navigator.pop(context);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                                );
+                              }
+                          },
+
+                          icon: Icon(
+                              Icons.search,
+                            color: Colors.tealAccent,
+                          ),
+                        style: ButtonStyle(
+                         backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                                side: BorderSide(color:Colors.teal,
+                                    width: 1.9)
+                            )
+                          )
+                        ),
+                          label: Text(
+                            "SEARCH ",
+                            style: TextStyle(
+                                fontFamily: 'Playfair',
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                                fontSize: 17.0,
+                                color: Colors.white
+
+                            ),
+                          ),
+                          // colors:Colors.purpleAccent
+                      ),
+
+                    TextButton.icon(
+                        onPressed: ()
+                        {
+                          if(isLoggedIn==true) {
+                            Navigator.pushNamed(context,'/favorites',arguments: {'Goog':_googleSignIn.currentUser.id,'Title':T});
+                          }
+                          else {
+                            showDialog(context: context, builder: (context) {
                               return AlertDialog(
                                 backgroundColor: Colors.yellow[100],
                                 title: Column(
                                   children: [
                                     Text(
-                                        "PLEASE SIGN-IN FIRST !",
+                                      "PLEASE SIGN-IN FIRST !",
                                       style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontFamily: 'Playfair',
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 2.0
+                                          fontSize: 17.0,
+                                          fontFamily: 'Playfair',
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                           color: Colors.black45
                                       ),
                                     ),
                                     CloseButton(
-                                      color: Colors.red,
-                                      onPressed: (){
+                                      color: Colors.white,
+                                      onPressed: () {
                                         Navigator.pop(context);
                                       },
                                     )
@@ -167,138 +243,127 @@ class _HomeState extends State<Home> {
                             }
                             );
                           }
-                      },
-                      icon: Icon(
-                          Icons.search
-                      ),
-                      label: Text(
-                        "SEARCH",
-                        style: TextStyle(
-                            fontFamily: 'Playfair',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                            fontSize: 19.0,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black87
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    side: BorderSide(color:Colors.teal,
+                                        width: 1.9)
+                                )
+                            )
+                        ),
+                        icon: Icon(
+                            Icons.star,
+                          color: Colors.tealAccent,
 
                         ),
-                      ),
-                      color:Colors.purpleAccent
-                  ),
-                  FlatButton.icon(
-                      onPressed: ()
-                      {
-                        if(isLoggedIn==true) {
-                          Navigator.pushNamed(context,'/favorites',arguments: {'Goog':_googleSignIn.currentUser.id,'Title':T});
-                        }
-                        else {
-                          showDialog(context: context, builder: (context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.yellow[100],
-                              title: Column(
-                                children: [
-                                  Text(
-                                    "PLEASE SIGN-IN FIRST !",
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontFamily: 'Playfair',
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 2.0
-                                    ),
-                                  ),
-                                  CloseButton(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                          );
-                        }
-                      },
-                      icon: Icon(
-                          Icons.star
-                      ),
-                      label: Text(
-                        "FAVORITES",
-                        style: TextStyle(
-                            fontFamily: 'Playfair',
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                            fontSize: 19.0,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.white
+                        label: Text(
+                          "FAVORITES ",
+                          style: TextStyle(
+                              fontFamily: 'Playfair',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5,
+                              fontSize: 17.0,
+                              color: Colors.white
+                          ),
                         ),
-                      ),
-                      color:Colors.blue.shade400
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                 children: [
-                   FlatButton.icon(
-                     color: Colors.lightGreenAccent,
-                     onPressed: () {
-                         _login(T);
-                     },
-                     icon: Icon(Icons.login_outlined),
-                     label: Text(
-                         "SIGN-IN",
-                       style: TextStyle(
-                         fontStyle: FontStyle.italic,
-                         fontWeight: FontWeight.bold,
-                         fontSize: 18.0,
-                         letterSpacing: 1.5,
-                         fontFamily: 'Playfair'
-                       ),
-                     ),
-                   ),
-                   FlatButton.icon(
-                     color: Colors.white,
-                     onPressed: (){
-                       // if(isLoggedIn==true)
-                       _logout();
-                     },
-                     icon: Icon(Icons.logout),
-                     label: Text(
-                         "SIGN-OUT",
-                       style: TextStyle(
-                           fontStyle: FontStyle.italic,
-                           fontWeight: FontWeight.bold,
-                           fontSize: 18.0,
-                           letterSpacing: 1.5,
-                           fontFamily: 'Playfair'
-                       ),
-                     ),
-                   )
-                 ],
-               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(labelText: "Enter Movie/Series Name"),
-                controller: t1,
-                style: TextStyle(
-                    fontSize: 21.0,
-                    fontFamily: 'Playfair',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.cyanAccent,
-                    letterSpacing: 2.0,
-                    fontStyle: FontStyle.italic
+                        // color:Colors.blue.shade400
+                    ),
+                  ],
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 10.0,
+                ),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   children: [
+                     TextButton.icon(
+                       // color: Colors.lightGreenAccent,
+                       onPressed: () {
+                           _login(T);
+                       },
+                       icon: Icon(Icons.login_outlined,
+                         color: Colors.tealAccent,),
+                       style: ButtonStyle(
+                           backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                               RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(16.0),
+                                   side: BorderSide(color:Colors.teal,
+                                       width: 1.9)
+                               )
+                           )
+                       ),
+                       label: Text(
+                           "SIGN-IN ",
+                         style: TextStyle(
+                           fontWeight: FontWeight.bold,
+                           fontSize: 17.0,
+                           letterSpacing: 1.5,
+                           fontFamily: 'Playfair',
+                           color: Colors.white
+
+                         ),
+                       ),
+                     ),
+                     TextButton.icon(
+                       // color: Colors.white,
+                       onPressed: (){
+                         // if(isLoggedIn==true)
+                         _logout();
+                       },
+                       icon: Icon(Icons.logout,
+                         color: Colors.tealAccent,),
+                       style: ButtonStyle(
+                           backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                               RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(16.0),
+                                 side: BorderSide(color:Colors.teal,
+                                 width: 1.9
+                                 )
+                               )
+                           )
+                       ),
+                       label: Text(
+                           "SIGN-OUT ",
+                         style: TextStyle(
+                             fontWeight: FontWeight.bold,
+                             fontSize: 17.0,
+                             letterSpacing: 1.5,
+                             fontFamily: 'Playfair',
+                             color: Colors.white
+                         ),
+                       ),
+                     )
+                   ],
+                 ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextField(
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                  hintText: (t1.text=="")?"Enter Movie/Series Name":"" ,
+                    hintStyle: Theme.of(context).textTheme.caption.copyWith(
+                      color: Colors.white70,
+                      fontSize: 19.0
+                    )
+                  ),
+                  controller: t1,
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'Playfair',
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF61E8F5),
+                      letterSpacing: 1.8,
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
       ),
     );
   }

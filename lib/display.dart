@@ -33,26 +33,18 @@ class _DisplayState extends State<Display> {
      String T= data['Title'];
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.yellow, Colors.purpleAccent]
-          )
-        ),
-        child: Column(
+      backgroundColor: Colors.purple[900],
+      body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(30,36,50,0),
               child: Text(
                 "IMDB RATING",
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
                     fontFamily: 'Playfair',
                     fontWeight: FontWeight.bold,
                     fontSize: 28.0,
-                    color: Colors.deepPurpleAccent
+                    color: Colors.red.shade400
                 ),
               ),
             ),
@@ -63,11 +55,11 @@ class _DisplayState extends State<Display> {
                 child: Text(
                   "$K",
                   style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 21.0,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.cyan[100],
+                      fontSize: 20.0,
                       fontFamily: 'Playfair',
-                      letterSpacing: 2.0
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
                   ),
                 ),
               ),
@@ -77,11 +69,10 @@ class _DisplayState extends State<Display> {
               child: Text(
                 "PLOT",
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
                     fontFamily: 'Playfair',
                     fontWeight: FontWeight.bold,
                     fontSize: 28.0,
-                    color: Colors.deepPurpleAccent
+                    color: Colors.red.shade400
                 ),
               ),
             ),
@@ -92,11 +83,11 @@ class _DisplayState extends State<Display> {
                 child: Text(
                   "$L",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.cyan[100],
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Playfair',
-                      letterSpacing: 2.0
+                      letterSpacing: 1.4
                   ),
                 ),
               ),
@@ -106,11 +97,10 @@ class _DisplayState extends State<Display> {
               child: Text(
                 "YEAR",
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
                     fontFamily: 'PLayfair',
                     fontWeight: FontWeight.bold,
                     fontSize: 28.0,
-                    color: Colors.deepPurpleAccent
+                    color: Colors.red.shade400
                 ),
               ),
             ),
@@ -121,7 +111,7 @@ class _DisplayState extends State<Display> {
                 child: Text(
                   "$M",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.cyan[100],
                       fontSize: 19.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PLayfair',
@@ -135,11 +125,10 @@ class _DisplayState extends State<Display> {
               child: Text(
                 "CAST",
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
                     fontFamily: 'PLayfair',
                     fontWeight: FontWeight.bold,
                     fontSize: 26.0,
-                    color: Colors.deepPurpleAccent
+                    color: Colors.red.shade400
                 ),
               ),
             ),
@@ -150,11 +139,11 @@ class _DisplayState extends State<Display> {
                 child: Text(
                   "$A",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.cyan[100],
                       fontSize: 16.5,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PLayfair',
-                    letterSpacing: 0.4
+                    letterSpacing: 0.9
                   ),
                 ),
               ),
@@ -164,11 +153,10 @@ class _DisplayState extends State<Display> {
               child: Text(
                 "GENRE",
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
                     fontFamily: 'PLayfair',
                     fontWeight: FontWeight.bold,
                     fontSize: 27.0,
-                    color: Colors.deepPurpleAccent
+                    color: Colors.red.shade400
                 ),
               ),
             ),
@@ -179,7 +167,7 @@ class _DisplayState extends State<Display> {
                 child: Text(
                   "$N",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.cyan[100],
                       fontSize: 17.5,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PLayfair',
@@ -194,37 +182,54 @@ class _DisplayState extends State<Display> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FlatButton.icon(
+                TextButton.icon(
                   onPressed: ()  {
-                    Navigator.pop(context,'/display');
+                    Navigator.popAndPushNamed(context,'/home');
                   },
-                  color: Colors.blue.shade400,
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              side: BorderSide(color:Colors.deepOrange)
+                          )
+                      )
+                  ),
                   icon: Icon(
-                      Icons.arrow_back
+                      Icons.arrow_back,
+                    color: Colors.red,
                   ),
                   label: Text(
                     "BACK",
                     style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 15.5,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'PLayfair',
-                        fontStyle: FontStyle.italic,
                         letterSpacing: 1.3,
-                        color: Colors.yellowAccent
+                        color: Colors.red
                     ),
                   ),
                 ),
                 SizedBox(
                   width: 16.0,
                 ),
-                FlatButton.icon(
+                TextButton.icon(
                   onPressed: () {
                     Favorites ob = Favorites(data['Goog'],T);
                     ob.Add();
                   },
-                  color: Colors.deepPurpleAccent[400],
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              side: BorderSide(color:Colors.deepOrange)
+                          )
+                      )
+                  ),
                   icon: Icon(
-                      Icons.add
+                      Icons.add,
+                    color: Colors.red,
                   ),
                   label: Text(
                     "ADD TO FAVORITES",
@@ -232,9 +237,8 @@ class _DisplayState extends State<Display> {
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'PLayfair',
-                        fontStyle: FontStyle.italic,
                         letterSpacing: 1.3,
-                        color: Colors.cyanAccent
+                        color: Colors.red
                     ),
                   ),
                 ),
@@ -242,7 +246,6 @@ class _DisplayState extends State<Display> {
             ),
           ],
         ),
-      ),
     );
   }
 }
