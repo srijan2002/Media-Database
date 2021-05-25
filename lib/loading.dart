@@ -18,49 +18,40 @@ class _LoadingState extends State<Loading> {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.red, Colors.purpleAccent]
-          )
+              colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87])
         ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(30,90,50,0),
-              child: Text(
-                " LOADING ...",
-                style: TextStyle(
-                    fontFamily: 'Playfair',
-                    fontWeight:FontWeight.bold,
-                    color: Colors.blue,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 32.0,
-                    letterSpacing: 2.5
+              padding: const EdgeInsets.fromLTRB(50, 90, 50, 0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFFD458F2).withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(25.0),
+                    border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(50,7,50,7),
+                  child: Text(
+                    " Loading ",
+                    style: TextStyle(
+                        fontFamily: 'Mont',
+                        fontWeight:FontWeight.w400,
+                        color: Colors.white,
+                        fontSize: 26.0,
+                        letterSpacing: 2.0
+                    ),
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 60.0,),
+            SizedBox(height: 100.0,),
             Center(
               child: SpinKitFadingCube(
                 color: Colors.white,
                 size: 50.0,
               ),
             ),
-            SizedBox(height: 230.0,),
-            FlatButton.icon(
-              onPressed: (){
-                Navigator.pushReplacementNamed(context,'/home');
-              },
-              label: Text(""
-                  "BACK",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontFamily: 'Playfair',
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic
-                ),
-              ),
-              color: Colors.yellow,
-              icon: Icon(Icons.arrow_back_rounded),
-            )
           ],
         ),
       ),

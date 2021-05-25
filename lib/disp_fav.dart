@@ -52,78 +52,85 @@ class _Disp_FavState extends State<Disp_Fav> {
     Get();
 
     return Scaffold(
-      backgroundColor: Colors.lightBlue[400],
-      appBar: AppBar(
-        backgroundColor:Colors.red,
-        title: Text(
-            "FAVORITES",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Playfair',
-            color: Colors.deepPurpleAccent,
-            fontSize: 26.0,
-            letterSpacing: 2.0
-          ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient:LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87]),
         ),
-        centerTitle: true,
-      ),
-      body:
-          ListView.builder(
-            itemCount: a.length,
-            itemBuilder: (context,index){
-                 return Card(
-                   color: Colors.lightBlue[100],
-                   child: ListTile(
-                    onTap: (){
-                      showDialog(context: context, builder:(context)
-                      {
-                        return AlertDialog(
-                          backgroundColor: Colors.deepOrange[100],
-                          title: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                      "DELETE",
-                                    style: TextStyle(
-                                      fontFamily: 'Playfair',
+            
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+              child: ListView.builder(
+                itemCount: a.length,
+                itemBuilder: (context,index){
+                     return Padding(
+                       padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+                       child: Container(
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(30.0),
+                           border: Border.all(width: 2.5,color: Color(0xFF9842CF)),
+                           color: Color(0xFFD458F2).withOpacity(0.20),
+                         ),
+                         child: ListTile(
+                          onTap: (){
+                            showDialog(context: context, builder:(context)
+                            {
+                              return AlertDialog(
+                                backgroundColor: Colors.deepOrange[100],
+                                title: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                            "DELETE",
+                                          style: TextStyle(
+                                            fontFamily: 'Playfair',
+                                          ),
+                                        ),
+                                        FlatButton.icon(
+                                          onPressed: () {
+                                            Del(a[index]);
+                                          },
+                                          label: Text(""),
+                                          icon: Icon(Icons.delete),
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                  FlatButton.icon(
-                                    onPressed: () {
-                                      Del(a[index]);
-                                    },
-                                    label: Text(""),
-                                    icon: Icon(Icons.delete),
-                                  )
-                                ],
-                              ),
-                              CloseButton(
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },
-                                color: Colors.blueAccent,
-                              )
-                            ],
-                          ),
-                        );
-                      });
-                    },
-                     title: Center(
-                       child: Text(
-                           a[index],
-                         style: TextStyle(
-                           fontFamily: 'Playfair',
-                           fontSize: 18.0,
-                           letterSpacing: 1.5,
-                           fontStyle: FontStyle.italic
+                                    CloseButton(
+                                      onPressed: (){
+                                        Navigator.pop(context);
+                                      },
+                                      color: Colors.blueAccent,
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                          },
+                           title: Center(
+                               child: Text(
+                                   a[index],
+                                 style: TextStyle(
+                                   fontFamily: 'Mont',
+                                   fontSize: 17.0,
+                                   letterSpacing: 1.0,
+                                   color: Colors.white,
+                                   fontWeight: FontWeight.w400
+
+                                 ),
+                               ),
+
+                           ),
+
                          ),
                        ),
-                     ),
-                   ),
-                 );
-                 },
+                     );
+                     },
+              ),
+            ),
           ),
     );
   }

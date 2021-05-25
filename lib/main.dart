@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
       T = data['Title'];
       String F=data['Actors'];
       if(data['Response']=="True")
-       Navigator.popAndPushNamed(context,'/display', arguments: {'imdbRating': X, 'Plot':Y, 'Year':Z,'Genre':A,'Title':T,'Actors':F,'Goog':_googleSignIn.currentUser.id,});
+       Navigator.popAndPushNamed(context,'/display', arguments: {'imdbRating': X, 'Plot':Y, 'Year':Z,'Genre':A,'Title':T,'Actors':F,'Goog':_googleSignIn.currentUser.id,'Pic':data['Poster']});
       else
         Navigator.pushReplacementNamed(context, '/error');
   }
@@ -233,7 +233,7 @@ class _HomeState extends State<Home> {
                                       ),
                                     ),
                                     CloseButton(
-                                      color: Colors.white,
+                                      color: Colors.redAccent,
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
@@ -350,7 +350,8 @@ class _HomeState extends State<Home> {
                   hintText: (t1.text=="")?"Enter Movie/Series Name":"" ,
                     hintStyle: Theme.of(context).textTheme.caption.copyWith(
                       color: Colors.purpleAccent,
-                      fontSize: 19.0
+                      fontSize: 19.0,
+                      fontFamily: 'Mont'
                     )
                   ),
                   controller: t1,
