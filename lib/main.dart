@@ -107,8 +107,9 @@ class _HomeState extends State<Home> {
           gradient:LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              colors: [Color(0xA91C1F1F), Colors.grey[900], Colors.blueGrey[900], Colors.black])
+              colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87]),
         ),
+
         child: Padding(
             padding: const EdgeInsets.fromLTRB(8,90,8,0),
             child: Column(
@@ -116,18 +117,18 @@ class _HomeState extends State<Home> {
                 Container(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.blue[900],
+                      color: Color(0xFFD458F2).withOpacity(0.15),
                       borderRadius: BorderRadius.circular(22.0),
-                     border: Border.all(width: 1.9,color: Colors.teal[500])
+                     border: Border.all(width: 2.1,color: Color(0xFF9842CF))
                     ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 5, 15, 8),
                       child: Text(
-                        "THE MEDIA DATABASE",
+                        "The Media Database",
                         style: TextStyle(
-                            fontSize: 25,
-                            fontFamily: 'Playfair',
-                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            fontFamily: 'Mont',
+                            fontWeight: FontWeight.w400,
                             color: Colors.white,
                             letterSpacing: 1.2
                         ),
@@ -161,7 +162,7 @@ class _HomeState extends State<Home> {
                                             "PLEASE SIGN-IN FIRST !",
                                           style: TextStyle(
                                             fontSize: 17.0,
-                                            fontFamily: 'Playfair',
+                                            fontFamily: 'Mont',
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5,
                                             color: Colors.black45
@@ -183,24 +184,24 @@ class _HomeState extends State<Home> {
 
                           icon: Icon(
                               Icons.search,
-                            color: Colors.tealAccent,
+                            color: Color(0xFFA941BA),
                           ),
                         style: ButtonStyle(
-                         backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                         backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
-                                side: BorderSide(color:Colors.teal,
+                                side: BorderSide(color:Color(0xFF9842CF),
                                     width: 1.9)
                             )
                           )
                         ),
                           label: Text(
-                            "SEARCH ",
+                            "Search ",
                             style: TextStyle(
-                                fontFamily: 'Playfair',
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
+                                fontFamily: 'Mont',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1.2,
                                 fontSize: 17.0,
                                 color: Colors.white
 
@@ -245,26 +246,26 @@ class _HomeState extends State<Home> {
                           }
                         },
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                            backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16.0),
-                                    side: BorderSide(color:Colors.teal,
+                                    side: BorderSide(color: Color(0xFF9842CF),
                                         width: 1.9)
                                 )
                             )
                         ),
                         icon: Icon(
                             Icons.star,
-                          color: Colors.tealAccent,
+                          color: Color(0xFFA941BA),
 
                         ),
                         label: Text(
-                          "FAVORITES ",
+                          "Favorites ",
                           style: TextStyle(
-                              fontFamily: 'Playfair',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
+                              fontFamily: 'Mont',
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 1.2,
                               fontSize: 17.0,
                               color: Colors.white
                           ),
@@ -285,24 +286,24 @@ class _HomeState extends State<Home> {
                            _login(T);
                        },
                        icon: Icon(Icons.login_outlined,
-                         color: Colors.tealAccent,),
+                         color: Color(0xFFA941BA),),
                        style: ButtonStyle(
-                           backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                           backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                RoundedRectangleBorder(
                                    borderRadius: BorderRadius.circular(16.0),
-                                   side: BorderSide(color:Colors.teal,
+                                   side: BorderSide(color: Color(0xFF9842CF),
                                        width: 1.9)
                                )
                            )
                        ),
                        label: Text(
-                           "SIGN-IN ",
+                           "Sign-In ",
                          style: TextStyle(
-                           fontWeight: FontWeight.bold,
+                           fontWeight: FontWeight.w400,
                            fontSize: 17.0,
-                           letterSpacing: 1.5,
-                           fontFamily: 'Playfair',
+                           letterSpacing: 1.2,
+                           fontFamily: 'Mont',
                            color: Colors.white
 
                          ),
@@ -315,25 +316,25 @@ class _HomeState extends State<Home> {
                          _logout();
                        },
                        icon: Icon(Icons.logout,
-                         color: Colors.tealAccent,),
+                         color: Color(0xFFA941BA),),
                        style: ButtonStyle(
-                           backgroundColor: MaterialStateProperty.all(Colors.blue[900]),
+                           backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                RoundedRectangleBorder(
                                    borderRadius: BorderRadius.circular(16.0),
-                                 side: BorderSide(color:Colors.teal,
+                                 side: BorderSide(color: Color(0xFF9842CF),
                                  width: 1.9
                                  )
                                )
                            )
                        ),
                        label: Text(
-                           "SIGN-OUT ",
+                           "Sign-Out ",
                          style: TextStyle(
-                             fontWeight: FontWeight.bold,
+                             fontWeight: FontWeight.w400,
                              fontSize: 17.0,
-                             letterSpacing: 1.5,
-                             fontFamily: 'Playfair',
+                             letterSpacing: 1.2,
+                             fontFamily: 'Mont',
                              color: Colors.white
                          ),
                        ),
@@ -348,16 +349,16 @@ class _HomeState extends State<Home> {
                   decoration: InputDecoration(
                   hintText: (t1.text=="")?"Enter Movie/Series Name":"" ,
                     hintStyle: Theme.of(context).textTheme.caption.copyWith(
-                      color: Colors.white70,
+                      color: Colors.purpleAccent,
                       fontSize: 19.0
                     )
                   ),
                   controller: t1,
                   style: TextStyle(
                       fontSize: 20.0,
-                      fontFamily: 'Playfair',
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF61E8F5),
+                      fontFamily: 'Mont',
+                      fontWeight: FontWeight.w400,
+                      color: Colors.purpleAccent,
                       letterSpacing: 1.8,
                   ),
                 )
