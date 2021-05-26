@@ -277,7 +277,7 @@ class _DisplayState extends State<Display> {
                   children: [
                     TextButton.icon(
                       onPressed: ()  {
-                        Navigator.popAndPushNamed(context,'/home');
+                        Navigator.pop(context);
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.2)),

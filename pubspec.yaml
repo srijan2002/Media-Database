@@ -29,6 +29,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_database:
+  gradient_app_bar:
 
 
 

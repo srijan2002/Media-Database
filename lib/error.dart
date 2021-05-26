@@ -53,7 +53,7 @@ class _ErrorState extends State<Error> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                  padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.5),
@@ -98,7 +98,7 @@ class _ErrorState extends State<Error> {
                    label: Text(
                      "Back",
                      style: TextStyle(
-                       fontSize: 20.0,
+                       fontSize: 17.0,
                        color:Colors.white,
                        fontFamily: 'Mont',
                        fontWeight: FontWeight.w400
