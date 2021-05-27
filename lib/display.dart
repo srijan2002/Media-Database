@@ -8,7 +8,7 @@ import 'package:media_db/main.dart';
 import 'main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_db/favorites.dart';
-
+import 'package:sizer/sizer.dart';
 class Display extends StatefulWidget{
   @override
   _DisplayState createState() => _DisplayState();
@@ -24,57 +24,68 @@ class _DisplayState extends State<Display> {
 
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute.of(context).settings.arguments;
-    String K =data['imdbRating'];
+    data = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
+    String K = data['imdbRating'];
     String L = data['Plot'];
-    String M= data['Year'];
-    String N= data['Genre'];
-    String A=data['Actors'];
-     String T= data['Title'];
-     String P=data['Pic'];
-
+    String M = data['Year'];
+    String N = data['Genre'];
+    String A = data['Actors'];
+    String T = data['Title'];
+    String P = data['Pic'];
+    return Sizer(
+        builder: (context, orientation, deviceType) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87])
+                colors: [
+                  Color(0xFF14161B).withOpacity(0.89),
+                  Color(0xFF14161B),
+                  Color(0xFF1A1A2E),
+                  Colors.black87
+                ])
         ),
-      child:Padding(
-        padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(width: 2.5,color: Color(0xFF7913B7)),
-          ),
-          child: ListView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(width: 2.5, color: Color(0xFF7913B7)),
+            ),
+            child: ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(75, 60, 75, 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      border: Border.all(width: 2.5,color: Color(0xFF9842CF)),
-                      color: Color(0xFFD458F2).withOpacity(0.20),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Image(
+                  Center(
+                    child: Container(
+                      height:MediaQuery.of(context).size.height*0.52,
+                      width: MediaQuery.of(context).size.width*0.58,
+                      // decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(30.0),
+                      //   border: Border.all(width: 2.5, color: Color(0xFF9842CF)),
+                      //   color: Color(0xFFD458F2).withOpacity(0.20),
+                      // ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Image(
                           image: NetworkImage(P),
-                        height: 350,
-                        width: 450,
+                          height:MediaQuery.of(context).size.height*0.52,
+                          width: MediaQuery.of(context).size.width*0.58,
+                        ),
                       ),
                     ),
                   ),
-                ),
+
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(90,36,90,0),
+                  padding: const EdgeInsets.fromLTRB(90, 36, 90, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
                     ),
                     child: Center(
                       child: Padding(
@@ -84,7 +95,8 @@ class _DisplayState extends State<Display> {
                           style: TextStyle(
                               fontFamily: 'Mont',
                               fontWeight: FontWeight.w400,
-                              fontSize: 22.0,
+                              // fontSize: 22.0,
+                              fontSize: 16.sp,
                               color: Colors.white
                           ),
                         ),
@@ -94,28 +106,28 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 6.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50,0,50,0),
+                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
                   child: Center(
                     child: Text(
                       "$K",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontFamily: 'Mont',
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 1.3,
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontFamily: 'Mont',
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 1.3,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 10.0,),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(120,22,120,0),
+                  padding: const EdgeInsets.fromLTRB(120, 22, 120, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
                     ),
                     child: Center(
                       child: Padding(
@@ -125,7 +137,8 @@ class _DisplayState extends State<Display> {
                           style: TextStyle(
                               fontFamily: 'Mont',
                               fontWeight: FontWeight.w400,
-                              fontSize: 22.0,
+                              // fontSize: 22.0,
+                              fontSize: 16.sp,
                               color: Colors.white
                           ),
                         ),
@@ -135,7 +148,7 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 15.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16,0,9,0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 9, 0),
                   child: Center(
                     child: Text(
                       "$L",
@@ -150,12 +163,12 @@ class _DisplayState extends State<Display> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(125,19,125,0),
+                  padding: const EdgeInsets.fromLTRB(125, 19, 125, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
                     ),
                     child: Center(
                       child: Padding(
@@ -165,7 +178,8 @@ class _DisplayState extends State<Display> {
                           style: TextStyle(
                               fontFamily: 'Mont',
                               fontWeight: FontWeight.w400,
-                              fontSize: 22.0,
+                              // fontSize: 22.0,
+                              fontSize: 16.sp,
                               color: Colors.white
                           ),
                         ),
@@ -175,7 +189,7 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50,0,50,0),
+                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
                   child: Center(
                     child: Text(
                       "$M",
@@ -190,12 +204,12 @@ class _DisplayState extends State<Display> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(130,30,130,0),
+                  padding: const EdgeInsets.fromLTRB(130, 30, 130, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
                     ),
                     child: Center(
                       child: Padding(
@@ -205,7 +219,8 @@ class _DisplayState extends State<Display> {
                           style: TextStyle(
                               fontFamily: 'Mont',
                               fontWeight: FontWeight.w400,
-                              fontSize: 22.0,
+                              // fontSize: 22.0,
+                              fontSize: 16.sp,
                               color: Colors.white
                           ),
                         ),
@@ -215,7 +230,7 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10,0,5,0),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 5, 0),
                   child: Center(
                     child: Text(
                       "$A",
@@ -224,18 +239,18 @@ class _DisplayState extends State<Display> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Mont',
-                        letterSpacing: 0.9
+                          letterSpacing: 0.9
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(130,30,130,0),
+                  padding: const EdgeInsets.fromLTRB(130, 30, 130, 0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFD458F2).withOpacity(0.15),
                         borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
                     ),
                     child: Center(
                       child: Padding(
@@ -245,7 +260,8 @@ class _DisplayState extends State<Display> {
                           style: TextStyle(
                               fontFamily: 'Mont',
                               fontWeight: FontWeight.w400,
-                              fontSize: 22.0,
+                              // fontSize: 22.0,
+                              fontSize: 16.sp,
                               color: Colors.white
                           ),
                         ),
@@ -255,7 +271,7 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(25,0,25,0),
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                   child: Center(
                     child: Text(
                       "$N",
@@ -276,26 +292,30 @@ class _DisplayState extends State<Display> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton.icon(
-                      onPressed: ()  {
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.2)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor: MaterialStateProperty.all(Color(
+                              0xFFD458F2).withOpacity(0.2)),
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.0),
-                                  side: BorderSide(color: Color(0xFF6803B4),width: 2.5)
+                                  side: BorderSide(
+                                      color: Color(0xFF6803B4), width: 2.5)
                               )
                           )
                       ),
                       icon: Icon(
-                          Icons.arrow_back,
-                        color:  Color(0xFFA941BA),
+                        Icons.arrow_back,
+                        color: Color(0xFFA941BA),
                       ),
                       label: Text(
                         "Back ",
                         style: TextStyle(
-                            fontSize: 16.5,
+                            // fontSize: 16.5,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Mont',
                             letterSpacing: 1.3,
@@ -308,26 +328,30 @@ class _DisplayState extends State<Display> {
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        Favorites ob = Favorites(data['Goog'],T);
+                        Favorites ob = Favorites(data['Goog'], T);
                         ob.Add();
                       },
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.2)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          backgroundColor: MaterialStateProperty.all(Color(
+                              0xFFD458F2).withOpacity(0.2)),
+                          shape: MaterialStateProperty.all<
+                              RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.0),
-                                  side: BorderSide(color:Color(0xFF6803B4),width: 2.5)
+                                  side: BorderSide(
+                                      color: Color(0xFF6803B4), width: 2.5)
                               )
                           )
                       ),
                       icon: Icon(
-                          Icons.add,
+                        Icons.add,
                         color: Color(0xFFA941BA),
                       ),
                       label: Text(
                         "Add To Favorites ",
                         style: TextStyle(
-                            fontSize: 16.5,
+                            // fontSize: 16.5,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Mont',
                             letterSpacing: 1.3,
@@ -337,13 +361,16 @@ class _DisplayState extends State<Display> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30.0,)
+                SizedBox(height: 30.0,),
+
               ],
             ),
+          ),
         ),
       ),
-      ),
     );
+  }
+  );
   }
 }
 

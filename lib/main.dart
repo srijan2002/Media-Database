@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'disp_fav.dart';
 import 'error.dart';
+import 'package:sizer/sizer.dart';
 String T;
  void main() async  {
   runApp(MaterialApp(
@@ -112,7 +113,9 @@ class _HomeState extends State<Home> {
 
         child: Padding(
             padding: const EdgeInsets.fromLTRB(8,90,8,0),
-            child: Column(
+          child: ListView(
+              children: [
+            Column(
               children: [
                 Container(
                   child: Container(
@@ -344,6 +347,7 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 20.0,
                 ),
+
                 TextField(
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
@@ -365,6 +369,9 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
+
+          ]
+        ),
           ),
       ),
     );

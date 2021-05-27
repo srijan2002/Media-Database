@@ -30,6 +30,8 @@ dependencies:
   cloud_firestore:
   firebase_database:
   gradient_app_bar:
+  sizer: ^2.0.13
+  list_tile_more_customizable: ^1.3.3
 
 
 
