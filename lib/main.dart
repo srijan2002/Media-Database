@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'disp_fav.dart';
 import 'error.dart';
 import 'package:sizer/sizer.dart';
+import 'login.dart';
 String T;
  void main() async  {
   runApp(MaterialApp(
@@ -23,8 +24,10 @@ String T;
       '/loading':(context)=>Loading(),
       '/display':(context)=>Display(),
       '/favorites':(context)=>Disp_Fav(),
-      '/error':(context)=>Error()
+      '/error':(context)=>Error(),
+      '/login':(context)=>Login()
     },
+    // initialRoute: '/login',
 
   ));
 }
@@ -99,106 +102,114 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     initLogin();
-
+    return Sizer(
+        builder: (context, orientation, deviceType) {
     return Scaffold(
       // backgroundColor: Colors.black45,
 
-      body:  Container(
+      body: Container(
         decoration: BoxDecoration(
-          gradient:LinearGradient(
+          gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87]),
+              colors: [
+                Color(0xFF14161B).withOpacity(0.89),
+                Color(0xFF14161B),
+                Color(0xFF1A1A2E),
+                Colors.black87
+              ]),
         ),
 
         child: Padding(
-            padding: const EdgeInsets.fromLTRB(8,90,8,0),
+          padding: const EdgeInsets.fromLTRB(8, 40, 8, 0),
           child: ListView(
               children: [
-            Column(
-              children: [
-                Container(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD458F2).withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(22.0),
-                     border: Border.all(width: 2.1,color: Color(0xFF9842CF))
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 8),
-                      child: Text(
-                        "The Media Database",
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: 'Mont',
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            letterSpacing: 1.2
+                Column(
+                  children: [
+                    Container(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xFFD458F2).withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(22.0),
+                            border: Border.all(width: 2.1, color: Color(
+                                0xFF9842CF))
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 8),
+                          child: Text(
+                            "The Media Database",
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontFamily: 'Mont',
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                                letterSpacing: 1.2
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
 
-                    TextButton.icon(
+                        TextButton.icon(
                           onPressed: () {
-                            if(isLoggedIn==true) {
+                            if (isLoggedIn == true) {
                               setState(() {
                                 n = t1.text;
                               });
                               getData();
                             }
-                            else
-                              {
-                                showDialog(context: context, builder:(context){
-                                  return AlertDialog(
-                                    backgroundColor: Colors.yellow[100],
-                                    title: Column(
-                                      children: [
-                                        Text(
-                                            "PLEASE SIGN-IN FIRST !",
-                                          style: TextStyle(
+                            else {
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.yellow[100],
+                                  title: Column(
+                                    children: [
+                                      Text(
+                                        "PLEASE SIGN-IN FIRST !",
+                                        style: TextStyle(
                                             fontSize: 17.0,
                                             fontFamily: 'Mont',
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5,
                                             color: Colors.black45
-                                          ),
                                         ),
-                                        CloseButton(
-                                          color: Colors.red[400],
-                                          onPressed: (){
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }
+                                      ),
+                                      CloseButton(
+                                        color: Colors.red[400],
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 );
                               }
+                              );
+                            }
                           },
 
                           icon: Icon(
-                              Icons.search,
+                            Icons.search,
                             color: Color(0xFFA941BA),
                           ),
-                        style: ButtonStyle(
-                         backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                                side: BorderSide(color:Color(0xFF9842CF),
-                                    width: 1.9)
-                            )
-                          )
-                        ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(
+                                  0xFFD458F2).withOpacity(0.1)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      side: BorderSide(color: Color(0xFF9842CF),
+                                          width: 1.9)
+                                  )
+                              )
+                          ),
                           label: Text(
                             "Search ",
                             style: TextStyle(
@@ -211,169 +222,511 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           // colors:Colors.purpleAccent
-                      ),
+                        ),
 
-                    TextButton.icon(
-                        onPressed: ()
-                        {
-                          if(isLoggedIn==true) {
-                            Navigator.pushNamed(context,'/favorites',arguments: {'Goog':_googleSignIn.currentUser.id,'Title':T});
-                          }
-                          else {
-                            showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.yellow[100],
-                                title: Column(
-                                  children: [
-                                    Text(
-                                      "PLEASE SIGN-IN FIRST !",
-                                      style: TextStyle(
-                                          fontSize: 17.0,
-                                          fontFamily: 'Playfair',
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 1.5,
-                                           color: Colors.black45
+                        TextButton.icon(
+                          onPressed: () {
+                            if (isLoggedIn == true) {
+                              Navigator.pushNamed(context, '/favorites',
+                                  arguments: {
+                                    'Goog': _googleSignIn.currentUser.id,
+                                    'Title': T
+                                  });
+                            }
+                            else {
+                              showDialog(context: context, builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.yellow[100],
+                                  title: Column(
+                                    children: [
+                                      Text(
+                                        "PLEASE SIGN-IN FIRST !",
+                                        style: TextStyle(
+                                            fontSize: 17.0,
+                                            fontFamily: 'Playfair',
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.5,
+                                            color: Colors.black45
+                                        ),
                                       ),
-                                    ),
-                                    CloseButton(
-                                      color: Colors.redAccent,
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    )
-                                  ],
-                                ),
+                                      CloseButton(
+                                        color: Colors.redAccent,
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
                               );
                             }
-                            );
-                          }
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    side: BorderSide(color: Color(0xFF9842CF),
-                                        width: 1.9)
-                                )
-                            )
-                        ),
-                        icon: Icon(
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(
+                                  0xFFD458F2).withOpacity(0.1)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      side: BorderSide(color: Color(0xFF9842CF),
+                                          width: 1.9)
+                                  )
+                              )
+                          ),
+                          icon: Icon(
                             Icons.star,
-                          color: Color(0xFFA941BA),
+                            color: Color(0xFFA941BA),
 
+                          ),
+                          label: Text(
+                            "Favorites ",
+                            style: TextStyle(
+                                fontFamily: 'Mont',
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1.2,
+                                fontSize: 17.0,
+                                color: Colors.white
+                            ),
+                          ),
+                          // color:Colors.blue.shade400
                         ),
-                        label: Text(
-                          "Favorites ",
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton.icon(
+                          // color: Colors.white,
+                          onPressed: (){
+                            // if(isLoggedIn==true)
+                            Navigator.popAndPushNamed(context,'/login');
+                          },
+                          icon: Icon(Icons.login_outlined,
+                            color: Color(0xFFA941BA),),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                    side: BorderSide(color: Color(0xFF9842CF),
+                                    width: 1.9
+                                    )
+                                  )
+                              )
+                          ),
+                          label: Text(
+                              "Login ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17.0,
+                                letterSpacing: 1.2,
+                                fontFamily: 'Mont',
+                                color: Colors.white
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+
+                    TextField(
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                          hintText: (t1.text == "")
+                              ? "Enter Movie/Series Name"
+                              : "",
+                          hintStyle: Theme
+                              .of(context)
+                              .textTheme
+                              .caption
+                              .copyWith(
+                              color: Colors.purpleAccent,
+                              fontSize: 19.0,
+                              fontFamily: 'Mont'
+                          )
+                      ),
+                      controller: t1,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Mont',
+                        fontWeight: FontWeight.w400,
+                        color: Colors.purpleAccent,
+                        letterSpacing: 1.8,
+                      ),
+                    ),
+                    SizedBox(height: 60.0,),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xFFD458F2).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(25.0),
+                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                      ),
+                      margin: new EdgeInsets.fromLTRB(0, 0, 250, 0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Trending",
                           style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Mont',
+                            color: Colors.white
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0,),
+                    Container(
+                      height: 33.h,
+
+                      child: ListView(
+                        // This next line does the trick.
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: (){
+                              n="Young Sheldon";
+                              if(isLoggedIn==true)
+                              getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/ys.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              n="Attack on Titan";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/aot.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              n="Friends";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/fr.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              n="Army of the Dead";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/army.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Karnan";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/kar.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="The Mauritanian";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/mau.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height:30.0),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xFFD458F2).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(25.0),
+                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                      ),
+                      margin: new EdgeInsets.fromLTRB(0, 0, 250, 0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Popular",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
                               fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 1.2,
-                              fontSize: 17.0,
                               color: Colors.white
                           ),
                         ),
-                        // color:Colors.blue.shade400
+                      ),
                     ),
+                    SizedBox(height: 20.0,),
+                    Container(
+                      height: 33.h,
+
+                      child: ListView(
+                        // This next line does the trick.
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: (){
+                              n="Game of thrones";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 160.0,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/got.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              n="Money Heist";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/mon.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Queen's Gambit";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/que.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Peaky Blinders";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/pea.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Stranger Things";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/st.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Tenet";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/ten.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 30.0,),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xFFD458F2).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(25.0),
+                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
+                      ),
+                      margin: new EdgeInsets.fromLTRB(0, 0, 250, 0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Top Rated",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Mont',
+                              color: Colors.white
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0,),
+                    Container(
+                      height: 33.h,
+
+                      child: ListView(
+                        // This next line does the trick.
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: (){
+                              n="Breaking Bad";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/bre.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              n="Shawshank Redemption";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/shaw.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Rick And Morty";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/rick.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Inception";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/inc.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Chernobyl";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/che.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ), InkWell(
+                            onTap: (){
+                              n="Sherlock";
+                              if(isLoggedIn==true)
+                                getData();
+                            },
+                            child: Container(
+                              width: 40.w,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                    'assets/she.jpg'),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20.0,)
                   ],
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                   children: [
-                     TextButton.icon(
-                       // color: Colors.lightGreenAccent,
-                       onPressed: () {
-                           _login(T);
-                       },
-                       icon: Icon(Icons.login_outlined,
-                         color: Color(0xFFA941BA),),
-                       style: ButtonStyle(
-                           backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                               RoundedRectangleBorder(
-                                   borderRadius: BorderRadius.circular(16.0),
-                                   side: BorderSide(color: Color(0xFF9842CF),
-                                       width: 1.9)
-                               )
-                           )
-                       ),
-                       label: Text(
-                           "Sign-In ",
-                         style: TextStyle(
-                           fontWeight: FontWeight.w400,
-                           fontSize: 17.0,
-                           letterSpacing: 1.2,
-                           fontFamily: 'Mont',
-                           color: Colors.white
 
-                         ),
-                       ),
-                     ),
-                     TextButton.icon(
-                       // color: Colors.white,
-                       onPressed: (){
-                         // if(isLoggedIn==true)
-                         _logout();
-                       },
-                       icon: Icon(Icons.logout,
-                         color: Color(0xFFA941BA),),
-                       style: ButtonStyle(
-                           backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                               RoundedRectangleBorder(
-                                   borderRadius: BorderRadius.circular(16.0),
-                                 side: BorderSide(color: Color(0xFF9842CF),
-                                 width: 1.9
-                                 )
-                               )
-                           )
-                       ),
-                       label: Text(
-                           "Sign-Out ",
-                         style: TextStyle(
-                             fontWeight: FontWeight.w400,
-                             fontSize: 17.0,
-                             letterSpacing: 1.2,
-                             fontFamily: 'Mont',
-                             color: Colors.white
-                         ),
-                       ),
-                     )
-                   ],
-                 ),
-                SizedBox(
-                  height: 20.0,
-                ),
-
-                TextField(
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                  hintText: (t1.text=="")?"Enter Movie/Series Name":"" ,
-                    hintStyle: Theme.of(context).textTheme.caption.copyWith(
-                      color: Colors.purpleAccent,
-                      fontSize: 19.0,
-                      fontFamily: 'Mont'
-                    )
-                  ),
-                  controller: t1,
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontFamily: 'Mont',
-                      fontWeight: FontWeight.w400,
-                      color: Colors.purpleAccent,
-                      letterSpacing: 1.8,
-                  ),
-                )
-              ],
-            ),
-
-          ]
-        ),
+              ]
           ),
+        ),
       ),
     );
+  }
+  );
   }
 }

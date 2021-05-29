@@ -61,19 +61,19 @@ class _DisplayState extends State<Display> {
               children: [
                   Center(
                     child: Container(
-                      height:MediaQuery.of(context).size.height*0.52,
-                      width: MediaQuery.of(context).size.width*0.58,
+                      height:MediaQuery.of(context).size.height*0.55,
+                      width: MediaQuery.of(context).size.width*0.65,
                       // decoration: BoxDecoration(
                       //   borderRadius: BorderRadius.circular(30.0),
                       //   border: Border.all(width: 2.5, color: Color(0xFF9842CF)),
                       //   color: Color(0xFFD458F2).withOpacity(0.20),
                       // ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(44),
                         child: Image(
                           image: NetworkImage(P),
-                          height:MediaQuery.of(context).size.height*0.52,
-                          width: MediaQuery.of(context).size.width*0.58,
+                          height:MediaQuery.of(context).size.height*0.55,
+                          width: MediaQuery.of(context).size.width*0.65,
                         ),
                       ),
                     ),
@@ -148,13 +148,13 @@ class _DisplayState extends State<Display> {
                 ),
                 SizedBox(height: 15.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 9, 0),
+                  padding: const EdgeInsets.fromLTRB(25, 0, 9, 0),
                   child: Center(
                     child: Text(
                       "$L",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15.0,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Mont',
                           letterSpacing: 1.1
@@ -236,10 +236,10 @@ class _DisplayState extends State<Display> {
                       "$A",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Mont',
-                          letterSpacing: 0.9
+                          letterSpacing: 0.7
                       ),
                     ),
                   ),
