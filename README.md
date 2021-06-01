@@ -24,10 +24,11 @@ samples, guidance on mobile development, and a full API reference.
  - Delete Favorite option on tapping the desired Movie/Series card in Favorites list
  - Automatic login retention on closing the app and re-opening without logging out
 
-<!-- ## Overview
-  <img src="https://user-images.githubusercontent.com/77445478/119229491-f3a0e200-bb35-11eb-8282-94f14b3c59e1.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/119229675-bee15a80-bb36-11eb-98e9-1355b3d24d95.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/119229768-0bc53100-bb37-11eb-93d9-7dd5529ea974.jpg" width="250" height="500"><img src="https://user-images.githubusercontent.com/77445478/119229811-44650a80-bb37-11eb-82c0-6b1e1561cde1.jpg" width="250" height="500">
-  <img src="https://user-images.githubusercontent.com/77445478/119229857-68285080-bb37-11eb-8d7b-1def04c340f9.jpg" width="250" height="500"> -->
-
+## Overview
+  <img src="https://user-images.githubusercontent.com/77445478/120319369-8f80d980-c2fe-11eb-9eb0-877956375dd0.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319556-c48d2c00-c2fe-11eb-8359-884415b4f916.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319638-dbcc1980-c2fe-11eb-8afc-2d53e9992b51.jpg" width="250" height="500"><img src="https://user-images.githubusercontent.com/77445478/120319735-f7372480-c2fe-11eb-8c4b-10688adb1b96.jpg" width="250" height="500">
   
+
+
+
   
 
