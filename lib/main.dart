@@ -404,7 +404,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Attack on Titan";
@@ -420,7 +420,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Friends";
@@ -436,7 +436,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Army of the Dead";
@@ -451,7 +451,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Karnan";
@@ -466,7 +466,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ),  SizedBox(width: 1.5.w,),
+                          ),  SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="The Mauritanian";
@@ -529,7 +529,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Money Heist";
@@ -545,7 +545,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),InkWell(
+                          SizedBox(width: 2.w,),InkWell(
                             onTap: (){
                               n="Queen's Gambit";
                               if(isLoggedIn==true)
@@ -560,7 +560,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Peaky Blinders";
@@ -576,7 +576,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Stranger Things";
@@ -591,7 +591,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Tenet";
@@ -655,7 +655,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 1.5.w,),
+                          SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Shawshank Redemption";
@@ -670,7 +670,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Rick And Morty";
@@ -685,7 +685,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Inception";
@@ -700,7 +700,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Chernobyl";
@@ -715,7 +715,7 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 1.5.w,),
+                          ), SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
                               n="Sherlock";
