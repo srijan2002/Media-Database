@@ -25,7 +25,7 @@ samples, guidance on mobile development, and a full API reference.
  - Automatic login retention on closing the app and re-opening without logging out
 
 ## Overview
-<img src="https://user-images.githubusercontent.com/77445478/120319369-8f80d980-c2fe-11eb-9eb0-877956375dd0.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319556-c48d2c00-c2fe-11eb-8359-884415b4f916.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319638-dbcc1980-c2fe-11eb-8afc-2d53e9992b51.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319735-f7372480-c2fe-11eb-8c4b-10688adb1b96.jpg" width="250" height="500">
+<img src="https://user-images.githubusercontent.com/77445478/120319369-8f80d980-c2fe-11eb-9eb0-877956375dd0.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319556-c48d2c00-c2fe-11eb-8359-884415b4f916.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319638-dbcc1980-c2fe-11eb-8afc-2d53e9992b51.jpg" width="250" height="500"> <img src="https://user-images.githubusercontent.com/77445478/120319735-f7372480-c2fe-11eb-8c4b-10688adb1b96.jpg" width="248" height="500">
   
 
 
