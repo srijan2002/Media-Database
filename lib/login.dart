@@ -22,7 +22,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isLoggedIn;
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email','https://www.googleapis.com/auth/contacts.readonly',]);
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   initLogin() {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
   {
     try {
       await _googleSignIn.signIn();
+
       Firestore ob = Firestore();
 
       setState(() {
