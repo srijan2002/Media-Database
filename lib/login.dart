@@ -49,6 +49,7 @@ class _LoginState extends State<Login> {
       },
           merge: true
       );
+      Navigator.popAndPushNamed(context, '/home');
     }
     catch(err){
       print(err);

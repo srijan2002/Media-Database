@@ -39,7 +39,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoggedIn;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]);
-  // GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   initLogin() {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
