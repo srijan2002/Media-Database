@@ -167,21 +167,22 @@ class _HomeState extends State<Home> {
                             else {
                               showDialog(context: context, builder: (context) {
                                 return AlertDialog(
-                                  backgroundColor: Colors.yellow[100],
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.sp))),
+                                  backgroundColor: Color(0xFF752BA9),
                                   title: Column(
                                     children: [
                                       Text(
-                                        "PLEASE SIGN-IN FIRST !",
+                                        "Please Sign-In First !",
                                         style: TextStyle(
-                                            fontSize: 17.0,
+                                            fontSize: 14.sp,
                                             fontFamily: 'Mont',
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5,
-                                            color: Colors.black45
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1,
+                                            color: Color(0xFFFFFFFF)
                                         ),
                                       ),
                                       CloseButton(
-                                        color: Colors.red[400],
+                                        color: Color(0xFFFFFFFF),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
@@ -236,21 +237,22 @@ class _HomeState extends State<Home> {
                             else {
                               showDialog(context: context, builder: (context) {
                                 return AlertDialog(
-                                  backgroundColor: Colors.yellow[100],
+                                  backgroundColor: Color(0xFF752BA9),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.sp))),
                                   title: Column(
                                     children: [
                                       Text(
-                                        "PLEASE SIGN-IN FIRST !",
+                                        "Please Sign-In First !",
                                         style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontFamily: 'Playfair',
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5,
-                                            color: Colors.black45
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Mont',
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1,
+                                            color: Color(0xFFFFFFFF)
                                         ),
                                       ),
                                       CloseButton(
-                                        color: Colors.redAccent,
+                                        color: Color(0xFFFFFFFF),
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
