@@ -49,7 +49,6 @@ class _LoginState extends State<Login> {
       },
           merge: true
       );
-      Navigator.popAndPushNamed(context, '/home');
     }
     catch(err){
       print(err);
@@ -67,7 +66,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     initLogin();
-
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
@@ -111,6 +109,7 @@ class _LoginState extends State<Login> {
                   TextButton.icon(
                     // color: Colors.lightGreenAccent,
                     onPressed: () {
+                      Navigator.pushReplacementNamed(context,'/home');
                       _login();
                     },
                     icon: Icon(Icons.login_outlined,
@@ -140,7 +139,7 @@ class _LoginState extends State<Login> {
                   TextButton.icon(
                     // color: Colors.white,
                     onPressed: (){
-                      // if(isLoggedIn==true)
+
                       _logout();
                     },
                     icon: Icon(Icons.logout,
@@ -173,7 +172,7 @@ class _LoginState extends State<Login> {
             TextButton.icon(
               // color: Colors.lightGreenAccent,
               onPressed: () {
-                Navigator.popAndPushNamed(context,'/home');
+                Navigator.pushReplacementNamed(context,'/home');
               },
               icon: Icon(Icons.arrow_back,
                 color: Color(0xFFA941BA),),

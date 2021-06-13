@@ -14,10 +14,11 @@ import 'disp_fav.dart';
 import 'error.dart';
 import 'package:sizer/sizer.dart';
 import 'login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 String T;
- void main() async  {
+ Future main() async  {
+   await dotenv.load(fileName: ".env");
   runApp(MaterialApp(
-
     routes: {
       '/':(context)=>Home(),
       '/home':(context)=>Home(),
@@ -27,7 +28,7 @@ String T;
       '/error':(context)=>Error(),
       '/login':(context)=>Login()
     },
-    // initialRoute: '/login',
+
 
   ));
 }
@@ -37,18 +38,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  String sign="Login/Logout";
   bool isLoggedIn;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]);
+  Map d={}; int flag=0;
 
-  initLogin() {
+  initLogin()  {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
       if (account != null) {
+
         isLoggedIn=true;
       } else {
+
         isLoggedIn=false;
       }
     });
     _googleSignIn.signInSilently();
+
   }
   _login(String X) async
   {
@@ -58,7 +65,6 @@ class _HomeState extends State<Home> {
 
       setState(() {
         isLoggedIn=true;
-
       });
       ob.collection('users').document(_googleSignIn.currentUser.id).setData({
       },
@@ -84,7 +90,8 @@ class _HomeState extends State<Home> {
   void getData() async{
 
     Navigator.pushNamed(context,'/loading');
-    Response response= await get("https://www.omdbapi.com/?t=$n&apikey=a018d195");
+    String url=dotenv.env['MOVIE_API']+n+dotenv.env['API_KEY'];
+    Response response= await get(url);
     Map data= jsonDecode(response.body);
       String X=data['imdbRating']; String Y=data['Plot'];
       String Z=data['Year'];String A=data['Genre'];
@@ -101,7 +108,9 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
-    initLogin();
+
+     initLogin();
+
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
@@ -304,7 +313,9 @@ class _HomeState extends State<Home> {
                         TextButton.icon(
                           // color: Colors.white,
                           onPressed: (){
-                            // if(isLoggedIn==true)
+                            setState(() {
+                              flag=1;
+                            });
                             Navigator.popAndPushNamed(context,'/login');
                           },
                           icon: Icon(Icons.login_outlined,
@@ -321,7 +332,7 @@ class _HomeState extends State<Home> {
                               )
                           ),
                           label: Text(
-                              "Login ",
+                              "$sign ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 17.0,

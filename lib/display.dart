@@ -24,10 +24,7 @@ class _DisplayState extends State<Display> {
 
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
+    data = ModalRoute.of(context).settings.arguments;
     String K = data['imdbRating'];
     String L = data['Plot'];
     String M = data['Year'];
@@ -228,15 +225,15 @@ class _DisplayState extends State<Display> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 8),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 5, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 5, 5, 0),
                   child: Center(
                     child: Text(
                       "$A",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12.sp,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Mont',
                           letterSpacing: 0.7
