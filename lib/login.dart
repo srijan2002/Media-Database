@@ -15,20 +15,29 @@ import 'error.dart';
 import 'package:sizer/sizer.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  String sign ="      ";
   bool isLoggedIn;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   initLogin() {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
       if (account != null) {
+        setState(() {
+          sign="Logout";
+        });
         isLoggedIn=true;
       } else {
+        setState(() {
+          sign="Login";
+        });
         isLoggedIn=false;
       }
     });
@@ -43,12 +52,13 @@ class _LoginState extends State<Login> {
 
       setState(() {
         isLoggedIn=true;
-
+        sign="Logout";
       });
       ob.collection('users').document(_googleSignIn.currentUser.id).setData({
       },
           merge: true
       );
+      Navigator.pushReplacementNamed(context, '/home');
     }
     catch(err){
       print(err);
@@ -61,11 +71,23 @@ class _LoginState extends State<Login> {
     await _googleSignIn.signOut();
     setState(() {
       isLoggedIn=false;
+      sign="Login";
     });
   }
   @override
   Widget build(BuildContext context) {
     initLogin();
+      bool flag;
+
+     if(isLoggedIn==true)
+       flag=true;
+     else
+      flag=false;
+
+     
+
+
+    print(sign);
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
@@ -109,8 +131,13 @@ class _LoginState extends State<Login> {
                   TextButton.icon(
                     // color: Colors.lightGreenAccent,
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context,'/home');
-                      _login();
+                      if(sign=="Login") {
+                        _login();
+                        // Navigator.pushReplacementNamed(context,'/home');
+                      }
+                      else {
+                        _logout();
+                      }
                     },
                     icon: Icon(Icons.login_outlined,
                       color: Color(0xFFA941BA),),
@@ -125,7 +152,7 @@ class _LoginState extends State<Login> {
                         )
                     ),
                     label: Text(
-                      "Sign-In ",
+                      "$sign ",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 17.0,
@@ -136,65 +163,68 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  TextButton.icon(
-                    // color: Colors.white,
-                    onPressed: (){
-
-                      _logout();
-                    },
-                    icon: Icon(Icons.logout,
-                      color: Color(0xFFA941BA),),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                                side: BorderSide(color: Color(0xFF9842CF),
-                                    width: 1.9
-                                )
-                            )
-                        )
-                    ),
-                    label: Text(
-                      "Sign-Out ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 17.0,
-                          letterSpacing: 1.2,
-                          fontFamily: 'Mont',
-                          color: Colors.white
-                      ),
-                    ),
-                  )
+                  // TextButton.icon(
+                  //   // color: Colors.white,
+                  //   onPressed: (){
+                  //
+                  //     _logout();
+                  //   },
+                  //   icon: Icon(Icons.logout,
+                  //     color: Color(0xFFA941BA),),
+                  //   style: ButtonStyle(
+                  //       backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
+                  //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  //           RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.circular(16.0),
+                  //               side: BorderSide(color: Color(0xFF9842CF),
+                  //                   width: 1.9
+                  //               )
+                  //           )
+                  //       )
+                  //   ),
+                  //   label: Text(
+                  //     "Sign-Out ",
+                  //     style: TextStyle(
+                  //         fontWeight: FontWeight.w400,
+                  //         fontSize: 17.0,
+                  //         letterSpacing: 1.2,
+                  //         fontFamily: 'Mont',
+                  //         color: Colors.white
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             ),
-            TextButton.icon(
-              // color: Colors.lightGreenAccent,
-              onPressed: () {
-                Navigator.pushReplacementNamed(context,'/home');
-              },
-              icon: Icon(Icons.arrow_back,
-                color: Color(0xFFA941BA),),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                          side: BorderSide(color: Color(0xFF9842CF),
-                              width: 1.9)
-                      )
-                  )
-              ),
-              label: Text(
-                "Go to Home ",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 17.0,
-                    letterSpacing: 1.2,
-                    fontFamily: 'Mont',
-                    color: Colors.white
+            Visibility(
+              visible: flag,
+              child: TextButton.icon(
+                // color: Colors.lightGreenAccent,
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context,'/home');
+                },
+                icon: Icon(Icons.arrow_back,
+                  color: Color(0xFFA941BA),),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                            side: BorderSide(color: Color(0xFF9842CF),
+                                width: 1.9)
+                        )
+                    )
+                ),
+                label: Text(
+                  "Go to Home ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 17.0,
+                      letterSpacing: 1.2,
+                      fontFamily: 'Mont',
+                      color: Colors.white
 
+                  ),
                 ),
               ),
             ),
