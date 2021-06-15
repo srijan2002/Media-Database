@@ -23,7 +23,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String sign ="      ";
+  String sign ="Login";
   bool isLoggedIn;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
   }
   @override
   Widget build(BuildContext context) {
-    initLogin();
+     initLogin();
       bool flag;
 
      if(isLoggedIn==true)
@@ -84,7 +84,8 @@ class _LoginState extends State<Login> {
      else
       flag=false;
 
-     
+
+
 
 
     print(sign);
@@ -133,7 +134,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       if(sign=="Login") {
                         _login();
-                        // Navigator.pushReplacementNamed(context,'/home');
+
                       }
                       else {
                         _logout();

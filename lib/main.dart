@@ -15,10 +15,20 @@ import 'error.dart';
 import 'package:sizer/sizer.dart';
 import 'login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'logout.dart';
+import 'models/data.dart';
 String T;
- Future main() async  {
+GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]); bool isLoggedIn;
+
+
+  main() async  {
+
+
    await dotenv.load(fileName: ".env");
   runApp(MaterialApp(
+
+    
+
     routes: {
       '/':(context)=>Home(),
       '/home':(context)=>Home(),
@@ -26,10 +36,11 @@ String T;
       '/display':(context)=>Display(),
       '/favorites':(context)=>Disp_Fav(),
       '/error':(context)=>Error(),
-      '/login':(context)=>Login()
+      '/login':(context)=>Login(),
+      '/logout':(context)=>Logout()
     },
 
-
+    
   ));
 }
 class Home extends StatefulWidget {
@@ -40,8 +51,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   String sign="Login/Logout";
-  bool isLoggedIn;
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]);
+
+
   Map d={}; int flag=0;
 
   initLogin()  {
@@ -57,6 +68,7 @@ class _HomeState extends State<Home> {
     _googleSignIn.signInSilently();
 
   }
+
   _login(String X) async
   {
     try {
@@ -88,18 +100,16 @@ class _HomeState extends State<Home> {
   final TextEditingController t1= new TextEditingController(text: "");
 
   void getData() async{
+   
 
-    Navigator.pushNamed(context,'/loading');
+       Navigator.pushNamed(context,'/loading');
     String url=dotenv.env['MOVIE_API']+n+dotenv.env['API_KEY'];
     Response response= await get(url);
     Map data= jsonDecode(response.body);
-      String X=data['imdbRating']; String Y=data['Plot'];
-      String Z=data['Year'];String A=data['Genre'];
-      T = data['Title'];
-      String F=data['Actors'];
+    current = Data.fromJson(data);
       if(data['Response']=="True")
-       Navigator.popAndPushNamed(context,'/display', arguments: {'imdbRating': X, 'Plot':Y, 'Year':Z,'Genre':A,'Title':T,'Actors':F,'Goog':_googleSignIn.currentUser.id,'Pic':data['Poster']});
-      else
+        Navigator.pushReplacementNamed(context,'/display', arguments: { 'Goog':_googleSignIn.currentUser.id,'url':url});
+        else
         Navigator.pushReplacementNamed(context, '/error');
   }
   @override
@@ -108,8 +118,7 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
-
-     initLogin();
+    initLogin();
 
     return Sizer(
         builder: (context, orientation, deviceType) {
@@ -313,10 +322,10 @@ class _HomeState extends State<Home> {
                         TextButton.icon(
                           // color: Colors.white,
                           onPressed: (){
-                            setState(() {
-                              flag=1;
-                            });
-                            Navigator.popAndPushNamed(context,'/login');
+                            if(isLoggedIn==true)
+                            Navigator.pushReplacementNamed(context,'/logout');
+                            else
+                              Navigator.pushReplacementNamed(context, '/login');
                           },
                           icon: Icon(Icons.login_outlined,
                             color: Color(0xFFA941BA),),
@@ -545,7 +554,7 @@ class _HomeState extends State<Home> {
                           SizedBox(width: 2.w,),
                           InkWell(
                             onTap: (){
-                              n="Money Heist";
+                              n="La Casa De Papel";
                               if(isLoggedIn==true)
                                 getData();
                             },

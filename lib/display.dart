@@ -9,6 +9,8 @@ import 'main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_db/favorites.dart';
 import 'package:sizer/sizer.dart';
+import 'models/data.dart';
+import 'main.dart';
 class Display extends StatefulWidget{
   @override
   _DisplayState createState() => _DisplayState();
@@ -23,15 +25,10 @@ class _DisplayState extends State<Display> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     data = ModalRoute.of(context).settings.arguments;
-    String K = data['imdbRating'];
-    String L = data['Plot'];
-    String M = data['Year'];
-    String N = data['Genre'];
-    String A = data['Actors'];
-    String T = data['Title'];
-    String P = data['Pic'];
+    String url = data['url'];
+
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
@@ -68,7 +65,7 @@ class _DisplayState extends State<Display> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(44),
                         child: Image(
-                          image: NetworkImage(P),
+                          image: NetworkImage(current.Poster),
                           height:MediaQuery.of(context).size.height*0.55,
                           width: MediaQuery.of(context).size.width*0.65,
                         ),
@@ -106,7 +103,7 @@ class _DisplayState extends State<Display> {
                   padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
                   child: Center(
                     child: Text(
-                      "$K",
+                      "${current.imdbRating}",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
@@ -148,7 +145,7 @@ class _DisplayState extends State<Display> {
                   padding: const EdgeInsets.fromLTRB(25, 0, 9, 0),
                   child: Center(
                     child: Text(
-                      "$L",
+                      "${current.Plot}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 11.sp,
@@ -189,7 +186,7 @@ class _DisplayState extends State<Display> {
                   padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
                   child: Center(
                     child: Text(
-                      "$M",
+                      "${current.Year}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 19.0,
@@ -230,7 +227,7 @@ class _DisplayState extends State<Display> {
                   padding: const EdgeInsets.fromLTRB(15, 5, 5, 0),
                   child: Center(
                     child: Text(
-                      "$A",
+                      "${current.Actors}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 11.sp,
@@ -271,7 +268,7 @@ class _DisplayState extends State<Display> {
                   padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                   child: Center(
                     child: Text(
-                      "$N",
+                      "${current.Genre}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
@@ -290,7 +287,8 @@ class _DisplayState extends State<Display> {
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+                        Navigator.pushReplacementNamed(context,'/home');
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Color(
@@ -325,8 +323,8 @@ class _DisplayState extends State<Display> {
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        Favorites ob = Favorites(data['Goog'], T);
-                        ob.Add();
+                        Favorites b = Favorites(data['Goog'], current.Title,current.Poster);
+                        b.Add();
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Color(
@@ -359,7 +357,6 @@ class _DisplayState extends State<Display> {
                   ],
                 ),
                 SizedBox(height: 30.0,),
-
               ],
             ),
           ),
