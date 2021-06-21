@@ -1,19 +1,16 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
-import 'package:http/http.dart';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:media_db/favorites.dart';
 import 'loading.dart';
 import 'display.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'disp_fav.dart';
-import 'error.dart';
 import 'package:sizer/sizer.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'models/sign_inState.dart';
 
 
 
@@ -27,37 +24,39 @@ class _LoginState extends State<Login> {
   bool isLoggedIn;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  initLogin() {
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
-      if (account != null) {
-        setState(() {
-          sign="Logout";
-        });
-        isLoggedIn=true;
-      } else {
-        setState(() {
-          sign="Login";
-        });
-        isLoggedIn=false;
-      }
-    });
-    _googleSignIn.signInSilently();
+   Future initLogin() async{
+
+     if( await _googleSignIn.isSignedIn()==true)
+       await Future.delayed(Duration(milliseconds: 0)).then((value) =>
+           Navigator.pushReplacementNamed(context, '/home'));
+     
+
   }
   _login() async
   {
     try {
       await _googleSignIn.signIn();
-
       Firestore ob = Firestore();
 
       setState(() {
+        log=Log(_googleSignIn.currentUser.id,_googleSignIn.currentUser.photoUrl,_googleSignIn.currentUser.displayName);
         isLoggedIn=true;
-        sign="Logout";
+        print(log.sign);
       });
       ob.collection('users').document(_googleSignIn.currentUser.id).setData({
       },
           merge: true
       );
+      DocumentReference ref= Firestore.instance.collection('users').document(_googleSignIn.currentUser.id);
+      DocumentSnapshot doc =await ref.get();
+      List tags =doc.data['Titles'];
+      List tag = doc.data['Links'];
+
+        ref.updateData({
+          'Titles': FieldValue.arrayUnion([]),
+          'Links': FieldValue.arrayUnion([])
+        } );
+
       Navigator.pushReplacementNamed(context, '/home');
     }
     catch(err){
@@ -72,58 +71,39 @@ class _LoginState extends State<Login> {
     setState(() {
       isLoggedIn=false;
       sign="Login";
+      log=Log("","","");
     });
   }
   @override
   Widget build(BuildContext context) {
      initLogin();
       bool flag;
-
-     if(isLoggedIn==true)
-       flag=true;
-     else
-      flag=false;
-
-
-
-
-
-    print(sign);
-    return Sizer(
+      return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
-        decoration: BoxDecoration(
-          gradient:LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [Color(0xFF14161B).withOpacity(0.89), Color(0xFF14161B), Color(0xFF1A1A2E), Colors.black87]),
-        ),
+
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
               child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xFFD458F2).withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(width: 2.1,color: Color(0xFF9842CF))
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "Kindly Sign-in to continue !",
                     style: TextStyle(
                         fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Mont',
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'MontB',
                         color: Colors.white
                     ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 50.0,),
+            SizedBox(height: 20.0,),
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 30, 40, 20),
               child: Row(
@@ -132,22 +112,16 @@ class _LoginState extends State<Login> {
                   TextButton.icon(
                     // color: Colors.lightGreenAccent,
                     onPressed: () {
-                      if(sign=="Login") {
                         _login();
-
-                      }
-                      else {
-                        _logout();
-                      }
                     },
                     icon: Icon(Icons.login_outlined,
-                      color: Color(0xFFA941BA),),
+                      color: Colors.white70,),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
+
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16.0),
-                                side: BorderSide(color: Color(0xFF9842CF),
+                                side: BorderSide(color: Colors.white70,
                                     width: 1.9)
                             )
                         )
@@ -155,7 +129,7 @@ class _LoginState extends State<Login> {
                     label: Text(
                       "$sign ",
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.bold,
                           fontSize: 17.0,
                           letterSpacing: 1.2,
                           fontFamily: 'Mont',
@@ -164,71 +138,11 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  // TextButton.icon(
-                  //   // color: Colors.white,
-                  //   onPressed: (){
-                  //
-                  //     _logout();
-                  //   },
-                  //   icon: Icon(Icons.logout,
-                  //     color: Color(0xFFA941BA),),
-                  //   style: ButtonStyle(
-                  //       backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                  //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  //           RoundedRectangleBorder(
-                  //               borderRadius: BorderRadius.circular(16.0),
-                  //               side: BorderSide(color: Color(0xFF9842CF),
-                  //                   width: 1.9
-                  //               )
-                  //           )
-                  //       )
-                  //   ),
-                  //   label: Text(
-                  //     "Sign-Out ",
-                  //     style: TextStyle(
-                  //         fontWeight: FontWeight.w400,
-                  //         fontSize: 17.0,
-                  //         letterSpacing: 1.2,
-                  //         fontFamily: 'Mont',
-                  //         color: Colors.white
-                  //     ),
-                  //   ),
-                  // )
+                  
                 ],
               ),
             ),
-            Visibility(
-              visible: flag,
-              child: TextButton.icon(
-                // color: Colors.lightGreenAccent,
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context,'/home');
-                },
-                icon: Icon(Icons.arrow_back,
-                  color: Color(0xFFA941BA),),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                            side: BorderSide(color: Color(0xFF9842CF),
-                                width: 1.9)
-                        )
-                    )
-                ),
-                label: Text(
-                  "Go to Home ",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17.0,
-                      letterSpacing: 1.2,
-                      fontFamily: 'Mont',
-                      color: Colors.white
 
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
 

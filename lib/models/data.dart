@@ -6,9 +6,10 @@ class Data {
   final String Title;
   final String Poster;
   final String Actors;
+  final String Runtime;
 
 
-  Data({this.imdbRating, this.Plot,this.Year,this.Genre,this.Title,this.Poster,this.Actors,});  // curly braces specify arguments not always required
+  Data({this.imdbRating, this.Plot,this.Year,this.Genre,this.Title,this.Poster,this.Actors,this.Runtime});  // curly braces specify arguments not always required
 
   Data.fromJson(Map<String, dynamic> json)
       : imdbRating = json['imdbRating'],
@@ -17,7 +18,8 @@ class Data {
         Title = json['Title'],
         Poster = json['Poster'],
         Actors = json['Actors'],
-        Plot = json['Plot'];
+        Plot = json['Plot'],
+        Runtime= json['Runtime'];
 
   Map<String, dynamic> toJson() => {
     'imdbRating': imdbRating,
@@ -26,7 +28,8 @@ class Data {
     'Title': Title,
     'Posters': Poster,
     'Actors': Actors,
-    'Plot':Plot
+    'Plot':Plot,
+    'Runtime':Runtime
 
   };
 }

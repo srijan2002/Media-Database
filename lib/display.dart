@@ -5,362 +5,384 @@ import 'package:http/http.dart';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:media_db/main.dart';
-import 'main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_db/favorites.dart';
 import 'package:sizer/sizer.dart';
 import 'models/data.dart';
 import 'main.dart';
+import 'package:readmore/readmore.dart';
+import 'models/sign_inState.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'models/isFav.dart';
 class Display extends StatefulWidget{
   @override
   _DisplayState createState() => _DisplayState();
 }
 
 class _DisplayState extends State<Display> {
-  Map data = {};
+  Map data = {};var n="";
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   @override
   void initState(){
     super.initState();
   }
 
+  void getData() async{
+
+
+    Navigator.pushNamed(context,'/loading');
+    String url=dotenv.env['MOVIE_API']+n+dotenv.env['API_KEY'];
+    Response response= await get(url);
+    Map data= jsonDecode(response.body);
+    current = Data.fromJson(data);
+    if(data['Response']=="True")
+      Navigator.pushReplacementNamed(context,'/display',);
+    else
+      Navigator.pushReplacementNamed(context, '/error');
+  }
   @override
   Widget build(BuildContext context)  {
-    data = ModalRoute.of(context).settings.arguments;
-    String url = data['url'];
+
+    String GEN;
+    if(current.Genre.indexOf(',')!=-1)
+      GEN=current.Genre.substring(0,current.Genre.indexOf(','));
+    else
+      GEN=current.Genre;
 
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF14161B).withOpacity(0.89),
-                  Color(0xFF14161B),
-                  Color(0xFF1A1A2E),
-                  Colors.black87
-                ])
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(width: 2.5, color: Color(0xFF7913B7)),
-            ),
             child: ListView(
               children: [
-                  Center(
-                    child: Container(
-                      height:MediaQuery.of(context).size.height*0.55,
-                      width: MediaQuery.of(context).size.width*0.65,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      //   border: Border.all(width: 2.5, color: Color(0xFF9842CF)),
-                      //   color: Color(0xFFD458F2).withOpacity(0.20),
-                      // ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(44),
-                        child: Image(
-                          image: NetworkImage(current.Poster),
-                          height:MediaQuery.of(context).size.height*0.55,
-                          width: MediaQuery.of(context).size.width*0.65,
-                        ),
-                      ),
-                    ),
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                    child:Image.network(current.Poster,width: 100.w,fit: BoxFit.fill,height: 60.h,)),
+                   Container(
 
+                     margin: const EdgeInsets.fromLTRB(20, 30, 30, 0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         IconButton(
+                           iconSize: 20.sp,
+                             icon: Icon(Icons.arrow_back_outlined,color: Colors.white,size: 25.sp,),
+                           onPressed: (){
+                               Navigator.pop(context);
+                           },
+                         ),
+
+                        new IconButton(
+                           icon: Icon(Icons.favorite, color: (fav.isf)?Colors.red:Colors.white),
+                           iconSize: 20.sp,
+                           onPressed: (){
+                             setState(() {
+                               fav=Fav(true);
+                             });
+
+
+                             Favorites b = Favorites(log.sign, current.Title,current.Poster);
+                             b.Add();
+                           },
+                         ),
+                       ],
+                     ),
+                   )
+                 ]
+                ),
+                  SizedBox(height: 20.0,),
+                 Container(
+                   alignment: Alignment.center,
+                     child: Text(
+                         "${current.Title}",
+                       style: TextStyle(
+                         fontSize: 18.sp,
+                         fontFamily: 'MontB',
+                         color: Color(0xFFEFEFEF)
+                       ),
+                     )
+                 ),
+                SizedBox(height: 20.0,),
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     children: [
+                       Text(
+                         "${current.Runtime}",
+                         style: TextStyle(
+                           fontWeight: FontWeight.bold,
+                           fontSize: 13.sp,
+                           fontFamily: 'Mont',
+                           color: Colors.white
+                         ),
+                       ),
+                       Text(
+                         "${GEN}",
+                         style: TextStyle(
+                             fontSize: 13.sp,
+                             fontFamily: 'Mont',
+                             color: Colors.white,
+                             fontWeight: FontWeight.bold
+                         ),
+                       ),
+                       Text(
+                         "${current.Year}",
+                         style: TextStyle(
+                             fontWeight: FontWeight.bold,
+                             fontSize: 13.sp,
+                             fontFamily: 'Mont',
+                             color: Colors.white
+                         ),
+                       ),
+
+                     ],
+                   ),
+                 ),
+                SizedBox(height: 20.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(90, 36, 90, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD458F2).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "IMDb Rating",
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${current.imdbRating}",
                           style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              // fontSize: 22.0,
-                              fontSize: 16.sp,
-                              color: Colors.white
+                              fontFamily: 'MontB',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 13.sp,
                           ),
                         ),
-                      ),
+                        Icon(
+                          Icons.star,color: Colors.white,size: 13.sp,
+                        )
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 6.0),
+                SizedBox(height: 20.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
-                  child: Center(
-                    child: Text(
-                      "${current.imdbRating}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontFamily: 'Mont',
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 1.3,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.0,),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(120, 22, 120, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color(0xFFD458F2).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
+                        color: Color(0xFFEFEFEF),
+                        borderRadius: BorderRadius.circular(12.sp),
                     ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "Plot",
-                          style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              // fontSize: 22.0,
-                              fontSize: 16.sp,
-                              color: Colors.white
-                          ),
-                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.play_arrow,size: 25.sp,),
+                          Text(
+                              "Watch Trailer",
+                            style: TextStyle(
+
+                              color: Colors.black,
+                              fontFamily: 'MontB',
+                              fontSize: 14.sp
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 15.0),
+
+                SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 9, 0),
-                  child: Center(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
                     child: Text(
-                      "${current.Plot}",
+                      "Movie Info",
                       style: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: 'MontB',
+                        color: Colors.white
+                      ),
+                    ),
+                  ),
+                ),
+                 SizedBox(height: 13,),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: ReadMoreText(
+            '${current.Plot}',
+            style: TextStyle(
+                fontSize: 11.sp, fontWeight: FontWeight.bold,fontFamily: 'Mont',color: Colors.white,letterSpacing: 0.5
+            ),
+            trimLines: 2,
+            colorClickableText: Colors.yellow,
+            trimMode: TrimMode.Line,
+            trimCollapsedText: 'READ MORE',
+            trimExpandedText: 'READ LESS',
+            moreStyle: TextStyle(fontSize: 10.sp,fontFamily: 'MontB',color: Colors.yellow),
+            lessStyle: TextStyle(fontSize: 10.sp,fontFamily: 'MontB',color: Colors.yellow),
+          ),
+        ),
+                SizedBox(height: 20.0,),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Cast",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: 'MontB',
                           color: Colors.white,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Mont',
-                          letterSpacing: 1.1
+                        letterSpacing: 0.5
                       ),
                     ),
                   ),
                 ),
+                SizedBox(height: 15.0,),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(125, 19, 125, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD458F2).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "Year",
-                          style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              // fontSize: 22.0,
-                              fontSize: 16.sp,
-                              color: Colors.white
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
-                  child: Center(
-                    child: Text(
-                      "${current.Year}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Mont',
-                          letterSpacing: 1.4
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(130, 30, 130, 0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD458F2).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "Cast",
-                          style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              // fontSize: 22.0,
-                              fontSize: 16.sp,
-                              color: Colors.white
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 5, 0),
-                  child: Center(
+                    alignment: Alignment.center,
                     child: Text(
                       "${current.Actors}",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Mont',
-                          letterSpacing: 0.7
+                        fontFamily: 'Mont',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 12.sp
                       ),
                     ),
                   ),
                 ),
+                SizedBox(height: 50.0,),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(130, 30, 130, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD458F2).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25.0),
-                        border: Border.all(width: 2.1, color: Color(0xFF9842CF))
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "You might also like",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: 'MontB',
+                          color: Colors.white,
+                          letterSpacing: 0.5
+                      ),
                     ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "Genre",
-                          style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontWeight: FontWeight.w400,
-                              // fontSize: 22.0,
-                              fontSize: 16.sp,
-                              color: Colors.white
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  height: 33.h,
+
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: (){
+                          n="The Big Bang Theory";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/tbbt.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                  child: Center(
-                    child: Text(
-                      "${current.Genre}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Mont',
-                          letterSpacing: 1.0
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 50.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton.icon(
-                      onPressed: () {
-                        // Navigator.pop(context);
-                        Navigator.pushReplacementNamed(context,'/home');
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color(
-                              0xFFD458F2).withOpacity(0.2)),
-                          shape: MaterialStateProperty.all<
-                              RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  side: BorderSide(
-                                      color: Color(0xFF6803B4), width: 2.5)
-                              )
-                          )
-                      ),
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFFA941BA),
-                      ),
-                      label: Text(
-                        "Back ",
-                        style: TextStyle(
-                            // fontSize: 16.5,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Mont',
-                            letterSpacing: 1.3,
-                            color: Colors.white
+                      SizedBox(width: 5.w,),
+                      InkWell(
+                        onTap: (){
+                          n="Attack on Titan";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/aot.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 19.0,
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        Favorites b = Favorites(data['Goog'], current.Title,current.Poster);
-                        b.Add();
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color(
-                              0xFFD458F2).withOpacity(0.2)),
-                          shape: MaterialStateProperty.all<
-                              RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  side: BorderSide(
-                                      color: Color(0xFF6803B4), width: 2.5)
-                              )
-                          )
-                      ),
-                      icon: Icon(
-                        Icons.add,
-                        color: Color(0xFFA941BA),
-                      ),
-                      label: Text(
-                        "Add To Favorites ",
-                        style: TextStyle(
-                            // fontSize: 16.5,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Mont',
-                            letterSpacing: 1.3,
-                            color: Colors.white
+                      SizedBox(width: 5.w,),
+                      InkWell(
+                        onTap: (){
+                          n="Game Of Thrones";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/got.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 5.w,),
+                      InkWell(
+                        onTap: (){
+                          n="Army of the Dead";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/army.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                      ), SizedBox(width: 5.w,),
+                      InkWell(
+                        onTap: (){
+                          n="Sherlock";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/she.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                      ),  SizedBox(width: 5.w,),
+                      InkWell(
+                        onTap: (){
+                          n="Inception";
+                          if(isLoggedIn==true)
+                            getData();
+                        },
+                        child: Container(
+                          width: 40.w,
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'assets/inc.jpg',fit: BoxFit.cover,),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 30.0,),
+                SizedBox(height: 30,)
               ],
             ),
           ),
-        ),
       ),
     );
   }

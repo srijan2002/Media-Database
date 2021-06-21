@@ -1,22 +1,22 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:media_db/favorites.dart';
 import 'loading.dart';
 import 'display.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'disp_fav.dart';
 import 'error.dart';
 import 'package:sizer/sizer.dart';
 import 'login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'logout.dart';
 import 'models/data.dart';
+import 'models/sign_inState.dart';
+import 'models/check_fav.dart';
 String T;
 GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]); bool isLoggedIn;
 
@@ -27,7 +27,7 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]); bool isLoggedIn;
    await dotenv.load(fileName: ".env");
   runApp(MaterialApp(
 
-    
+     initialRoute: (log.sign!="")?'/home':'/login',
 
     routes: {
       '/':(context)=>Home(),
@@ -37,7 +37,6 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email',]); bool isLoggedIn;
       '/favorites':(context)=>Disp_Fav(),
       '/error':(context)=>Error(),
       '/login':(context)=>Login(),
-      '/logout':(context)=>Logout()
     },
 
     
@@ -58,10 +57,10 @@ class _HomeState extends State<Home> {
   initLogin()  {
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) async {
       if (account != null) {
-
+           log=Log(_googleSignIn.currentUser.id,_googleSignIn.currentUser.photoUrl,_googleSignIn.currentUser.displayName);
         isLoggedIn=true;
       } else {
-
+        log=Log("","","");
         isLoggedIn=false;
       }
     });
@@ -76,6 +75,7 @@ class _HomeState extends State<Home> {
       Firestore ob = Firestore();
 
       setState(() {
+        log=Log(_googleSignIn.currentUser.id,_googleSignIn.currentUser.photoUrl,_googleSignIn.currentUser.displayName);
         isLoggedIn=true;
       });
       ob.collection('users').document(_googleSignIn.currentUser.id).setData({
@@ -92,6 +92,7 @@ class _HomeState extends State<Home> {
   {
     await _googleSignIn.signOut();
     setState(() {
+      log=Log("","","");
       isLoggedIn=false;
     });
   }
@@ -105,13 +106,17 @@ class _HomeState extends State<Home> {
        Navigator.pushNamed(context,'/loading');
     String url=dotenv.env['MOVIE_API']+n+dotenv.env['API_KEY'];
     Response response= await get(url);
+
     Map data= jsonDecode(response.body);
     current = Data.fromJson(data);
+       Check che = Check(); await che.check(current.Title);
       if(data['Response']=="True")
-        Navigator.pushReplacementNamed(context,'/display', arguments: { 'Goog':_googleSignIn.currentUser.id,'url':url});
+        Navigator.pushReplacementNamed(context,'/display',);
         else
         Navigator.pushReplacementNamed(context, '/error');
   }
+
+  GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   @override
   void initState(){
     super.initState();
@@ -123,292 +128,201 @@ class _HomeState extends State<Home> {
     return Sizer(
         builder: (context, orientation, deviceType) {
     return Scaffold(
-      // backgroundColor: Colors.black45,
+      drawer: Drawer(
+        child: Container(
+          color: Colors.grey.shade900,
+          child: ListView(
+
+            children: [
+              DrawerHeader(
+               child: Padding(
+                 padding: const EdgeInsets.all(30.0),
+                 child: Container(
+
+                   decoration: BoxDecoration(
+                     shape: BoxShape.circle,
+                     image: DecorationImage(
+                         image: NetworkImage('${log.ph}'),
+                         fit: BoxFit.fill
+                     ),
+                   ),
+                 ),
+                 
+               ),
+              ),
+               Container(
+                 color: Colors.black54,
+                 child: ListTile(
+                   onTap: ()async{
+                     await _googleSignIn.signOut();
+                     setState(() {
+                       log=Log("","","");
+                       print(log.ph);
+                       isLoggedIn=false;
+                       sign="Login";
+                     });
+                     Navigator.pushReplacementNamed(context, '/login');
+                   },
+                   trailing: Icon(Icons.logout,color: Colors.white70,),
+                   title: Text(
+                     "Logout",
+                     style: TextStyle(
+                       fontWeight: FontWeight.w800,
+                       fontSize: 13.sp,
+                       fontFamily: 'Mont',
+                       color: Colors.white70
+                     ),
+                   ),
+                 ),
+               ),
+              SizedBox(height: 2,),
+              Container(
+                color: Colors.black54,
+                child: ListTile(
+                  onTap: (){
+                    SystemNavigator.pop();
+                  },
+                  trailing: Icon(Icons.close,color: Colors.white70,),
+                  title: Text(
+                    "Exit",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 13.sp,
+                        fontFamily: 'Mont',
+                        color: Colors.white70
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      key: _scaffold,
+      backgroundColor: Colors.black,
 
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Color(0xFF14161B).withOpacity(0.89),
-                Color(0xFF14161B),
-                Color(0xFF1A1A2E),
-                Colors.black87
-              ]),
-        ),
-
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 40, 8, 0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: ListView(
               children: [
                 Column(
                   children: [
+                    SizedBox(
+                      height: 40.0,
+                    ),
                     Container(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xFFD458F2).withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(22.0),
-                            border: Border.all(width: 2.1, color: Color(
-                                0xFF9842CF))
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 8),
-                          child: Text(
-                            "The Media Database",
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontFamily: 'Mont',
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                                letterSpacing: 1.2
-                            ),
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: (){
+                              _scaffold.currentState.openDrawer();
+                            },
+                            icon: Icon(Icons.menu,color: Colors.white,),
+                          ),
+                          IconButton(
+                            onPressed: (){
+                              Navigator.pushNamed(context, '/favorites',);
+                            },
+                            icon: Icon(Icons.favorite,color: Colors.white,),
+                          ),
+                        ],
+                      ),
+
+
+                    ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    Container(
+                     alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Text(
+                          "Explore",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'MontB',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 40.0,
+                      height: 20.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-
-                        TextButton.icon(
-                          onPressed: () {
-                            if (isLoggedIn == true) {
-                              setState(() {
-                                n = t1.text;
-                              });
-                              getData();
-                            }
-                            else {
-                              showDialog(context: context, builder: (context) {
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.sp))),
-                                  backgroundColor: Color(0xFF752BA9),
-                                  title: Column(
-                                    children: [
-                                      Text(
-                                        "Please Sign-In First !",
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontFamily: 'Mont',
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1,
-                                            color: Color(0xFFFFFFFF)
-                                        ),
-                                      ),
-                                      CloseButton(
-                                        color: Color(0xFFFFFFFF),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                              );
-                            }
-                          },
-
-                          icon: Icon(
-                            Icons.search,
-                            color: Color(0xFFA941BA),
-                          ),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color(
-                                  0xFFD458F2).withOpacity(0.1)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      side: BorderSide(color: Color(0xFF9842CF),
-                                          width: 1.9)
-                                  )
-                              )
-                          ),
-                          label: Text(
-                            "Search ",
-                            style: TextStyle(
-                                fontFamily: 'Mont',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 1.2,
-                                fontSize: 17.0,
-                                color: Colors.white
-
-                            ),
-                          ),
-                          // colors:Colors.purpleAccent
-                        ),
-
-                        TextButton.icon(
-                          onPressed: () {
-                            if (isLoggedIn == true) {
-                              Navigator.pushNamed(context, '/favorites',
-                                  arguments: {
-                                    'Goog': _googleSignIn.currentUser.id,
-                                    'Title': T
-                                  });
-                            }
-                            else {
-                              showDialog(context: context, builder: (context) {
-                                return AlertDialog(
-                                  backgroundColor: Color(0xFF752BA9),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.sp))),
-                                  title: Column(
-                                    children: [
-                                      Text(
-                                        "Please Sign-In First !",
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontFamily: 'Mont',
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1,
-                                            color: Color(0xFFFFFFFF)
-                                        ),
-                                      ),
-                                      CloseButton(
-                                        color: Color(0xFFFFFFFF),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                              );
-                            }
-                          },
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color(
-                                  0xFFD458F2).withOpacity(0.1)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      side: BorderSide(color: Color(0xFF9842CF),
-                                          width: 1.9)
-                                  )
-                              )
-                          ),
-                          icon: Icon(
-                            Icons.star,
-                            color: Color(0xFFA941BA),
-
-                          ),
-                          label: Text(
-                            "Favorites ",
-                            style: TextStyle(
-                                fontFamily: 'Mont',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 1.2,
-                                fontSize: 17.0,
-                                color: Colors.white
-                            ),
-                          ),
-                          // color:Colors.blue.shade400
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton.icon(
-                          // color: Colors.white,
-                          onPressed: (){
-                            if(isLoggedIn==true)
-                            Navigator.pushReplacementNamed(context,'/logout');
-                            else
-                              Navigator.pushReplacementNamed(context, '/login');
-                          },
-                          icon: Icon(Icons.login_outlined,
-                            color: Color(0xFFA941BA),),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color(0xFFD458F2).withOpacity(0.1)),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                    side: BorderSide(color: Color(0xFF9842CF),
-                                    width: 1.9
-                                    )
-                                  )
-                              )
-                          ),
-                          label: Text(
-                              "$sign ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 17.0,
-                                letterSpacing: 1.2,
-                                fontFamily: 'Mont',
-                                color: Colors.white
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-
-                    TextField(
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                          hintText: (t1.text == "")
-                              ? "Enter Movie/Series Name"
-                              : "",
-                          hintStyle: Theme
-                              .of(context)
-                              .textTheme
-                              .caption
-                              .copyWith(
-                              color: Colors.purpleAccent,
-                              fontSize: 19.0,
-                              fontFamily: 'Mont'
-                          )
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10.sp),
+                          border: Border.all(width: 1.5,color: Colors.white70)
                       ),
-                      controller: t1,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'Mont',
-                        fontWeight: FontWeight.w400,
-                        color: Colors.purpleAccent,
-                        letterSpacing: 1.8,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: TextField(
+                          onSubmitted: (String b){
+                            setState(() {
+                              b=t1.text;
+                              n=b;
+                            });
+                            getData();
+                          },
+                          cursorColor: Colors.white70,
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+
+                            border: InputBorder.none,
+                              hintText: (t1.text == "")
+                                  ? "Search..."
+                                  : "",
+                              hintStyle: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(
+                                  color: Colors.white70,
+                                  fontSize: 19.0,
+                                  fontFamily: 'Mont',
+                                  fontWeight: FontWeight.w700
+                              )
+                          ),
+                          controller: t1,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontFamily: 'Mont',
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white70,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(height: 60.0,),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD458F2).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25.0),
-                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
-                      ),
-                      margin: new EdgeInsets.fromLTRB(0, 0, 60.w, 0),
+                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Trending",
                           style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
                             fontFamily: 'Mont',
-                            color: Colors.white
+                            color: Colors.white,
+                            letterSpacing: 0.2
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0,),
+                    SizedBox(height: 10.0,),
                     Container(
                       height: 33.h,
 
                       child: ListView(
-                        // This next line does the trick.
                         scrollDirection: Axis.horizontal,
                         children: <Widget>[
                           InkWell(
@@ -421,12 +335,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/ys.jpg'),
+                                    'assets/ys.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Attack on Titan";
@@ -437,12 +351,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/aot.jpg'),
+                                    'assets/aot.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Friends";
@@ -453,12 +367,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/fr.jpg'),
+                                    'assets/fr.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Army of the Dead";
@@ -469,11 +383,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/army.jpg'),
+                                    'assets/army.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Karnan";
@@ -484,11 +398,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/kar.jpg'),
+                                    'assets/kar.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ),  SizedBox(width: 2.w,),
+                          ),  SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="The Mauritanian";
@@ -499,7 +413,7 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/mau.jpg'),
+                                    'assets/mau.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
@@ -509,26 +423,21 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(height:30.0),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD458F2).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25.0),
-                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
-                      ),
-                      margin: new EdgeInsets.fromLTRB(0, 0, 60.w, 0),
+                      alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Popular",
                           style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
                               fontFamily: 'Mont',
                               color: Colors.white
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0,),
+                    SizedBox(height: 10.0,),
                     Container(
                       height: 33.h,
 
@@ -546,12 +455,12 @@ class _HomeState extends State<Home> {
                               width: 160.0,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/got.jpg'),
+                                    'assets/got.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="La Casa De Papel";
@@ -562,12 +471,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/mon.jpg'),
+                                    'assets/mon.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),InkWell(
+                          SizedBox(width: 5.w,),InkWell(
                             onTap: (){
                               n="Queen's Gambit";
                               if(isLoggedIn==true)
@@ -577,12 +486,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/que.jpg'),
+                                    'assets/que.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Peaky Blinders";
@@ -593,12 +502,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/pea.jpg'),
+                                    'assets/pea.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Stranger Things";
@@ -609,11 +518,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/st.jpg'),
+                                    'assets/st.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Tenet";
@@ -624,7 +533,7 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/ten.jpg'),
+                                    'assets/ten.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
@@ -635,26 +544,22 @@ class _HomeState extends State<Home> {
 
                     SizedBox(height: 30.0,),
                     Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xFFD458F2).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25.0),
-                          border: Border.all(width: 2.1,color: Color(0xFF9842CF))
-                      ),
-                      margin: new EdgeInsets.fromLTRB(0, 0, 60.w, 0),
+                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "Top Rated",
                           style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
                               fontFamily: 'Mont',
-                              color: Colors.white
+                              color: Colors.white,
+                            letterSpacing: 0.5
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0,),
+                    SizedBox(height: 10.0,),
                     Container(
                       height: 33.h,
 
@@ -672,12 +577,12 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/bre.jpg'),
+                                    'assets/bre.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
                           ),
-                          SizedBox(width: 2.w,),
+                          SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Shawshank Redemption";
@@ -688,11 +593,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/shaw.jpg'),
+                                    'assets/shaw.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Rick And Morty";
@@ -703,11 +608,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/rick.jpg'),
+                                    'assets/rick.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Inception";
@@ -718,11 +623,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/inc.jpg'),
+                                    'assets/inc.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Chernobyl";
@@ -733,11 +638,11 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/che.jpg'),
+                                    'assets/che.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                          ), SizedBox(width: 2.w,),
+                          ), SizedBox(width: 5.w,),
                           InkWell(
                             onTap: (){
                               n="Sherlock";
@@ -748,7 +653,7 @@ class _HomeState extends State<Home> {
                               width: 40.w,
                               child: ClipRRect(
                                 child: Image.asset(
-                                    'assets/she.jpg'),
+                                    'assets/she.jpg',fit: BoxFit.cover,),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
@@ -764,6 +669,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+
     );
   }
   );

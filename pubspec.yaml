@@ -34,6 +34,8 @@ dependencies:
   list_tile_more_customizable: ^1.3.3
   material_design_icons_flutter: ^4.0.5955
   flutter_dotenv: ^5.0.0
+  readmore:
+  circular_profile_avatar: ^1.0.8
 
 
 
@@ -77,9 +79,9 @@ flutter:
         - asset: fonts/Montserrat-Light.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
+    - family: MontB
+      fonts:
+        - asset: fonts/Montserrat-ExtraBold.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
